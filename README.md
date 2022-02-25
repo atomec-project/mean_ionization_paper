@@ -1,3 +1,3 @@
-# mean_ionization_paper
+# Mean ionization paper
 
 Supplementary material for mean ionization paper
