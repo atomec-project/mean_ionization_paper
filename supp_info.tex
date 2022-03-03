@@ -155,7 +155,7 @@
     \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
     % Document parameters
     % Document title
-    \title{Supplementary Information}
+    \title{supp\_info}
     
     
     
@@ -794,7 +794,7 @@ from this output:
 \end{tcolorbox}
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Supplementary Information_files/Supplementary Information_10_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{supp_info_files/supp_info_10_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
@@ -1058,7 +1058,7 @@ accessed through that if desired. For example, using the density of the
 existing output:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{7}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} first set up and run a calculation}
 
@@ -1085,10 +1085,62 @@ iscf   E\_free (Ha)    dE (1.0e-05)   dn (1.0e-04)   dv (1.0e-04)
    4   -240.2223529      4.911e-04      3.669e-02      1.591e-02
    5   -240.2240213      6.945e-06      3.220e-03      6.192e-03
    6   -240.2242092      7.821e-07      1.220e-03      2.565e-03
+   7   -240.2242934      3.505e-07      4.381e-04      9.761e-04
+   8   -240.2242345      2.452e-07      1.548e-04      5.180e-04
+   9   -240.2242347      1.176e-09      5.611e-05      2.181e-04
+  10   -240.2242491      5.990e-08      2.371e-05      1.273e-04
+  11   -240.2242348      5.976e-08      1.191e-05      1.630e-04
+  12   -240.2242348      2.855e-12      2.649e-06      6.672e-05
+-----------------------------------------------------------------
+SCF cycle converged
+
+Final energies (Ha)
+
+---------------------------------------------
+Kinetic energy                 :   245.1184
+    orbitals                   :   245.1184
+    unbound ideal approx.      :     0.0000
+Electron-nuclear energy        :  -586.8083
+Hartree energy                 :   119.4855
+Exchange-correlation energy    :   -18.0172
+    exchange                   :   -17.0111
+    correlation                :    -1.0061
+---------------------------------------------
+Total energy                   :  -240.2217
+---------------------------------------------
+Entropy                        :     2.7034
+    orbitals                   :     2.7034
+    unbound ideal approx.      :     0.0000
+---------------------------------------------
+Total free energy              :  -240.2242
+---------------------------------------------
+
+Chemical potential             :   0.715
+Mean ionization state          :   3.000
+
+Orbital eigenvalues (Ha) :
+
+     |   n=l+1 |       2 |       3 |       4 |       5
+-----+---------+---------+---------+---------+---------
+ l=0 | -54.508 |  -3.400 |   0.372 |   2.940 |   6.897
+   1 |  -2.026 |   0.717 |   3.210 |   6.972 |  11.930
+   2 |   1.132 |   3.266 |   6.530 |  10.962 |  16.544
+
+
+Orbital occupations (2l+1) * f\_\{nl\} :
+
+     |   n=l+1 |       2 |       3 |       4 |       5
+-----+---------+---------+---------+---------+---------
+ l=0 |   2.000 |   2.000 |   2.000 |   0.000 |   0.000
+   1 |   6.000 |   1.000 |   0.000 |   0.000 |   0.000
+   2 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
+
+
+func:'CalcEnergy' took: 48.5132 sec
     \end{Verbatim}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{8}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} extract the MIS}
 \PY{n}{MIS} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{MIS}
@@ -1097,6 +1149,19 @@ iscf   E\_free (Ha)    dE (1.0e-05)   dn (1.0e-04)   dv (1.0e-04)
 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MIS = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{MIS}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}, frame=single, framerule=2mm, rulecolor=\color{outerrorbackground}]
+\textcolor{ansi-red}{---------------------------------------------------------------------------}
+\textcolor{ansi-red}{AttributeError}                            Traceback (most recent call last)
+\textcolor{ansi-green}{/tmp/ipykernel\_317721/1853468601.py} in \textcolor{ansi-cyan}{<module>}
+\textcolor{ansi-green-intense}{\textbf{      1}} \textcolor{ansi-red}{\# extract the MIS}
+\textcolor{ansi-green}{----> 2}\textcolor{ansi-red}{ }MIS \textcolor{ansi-blue}{=} output\textcolor{ansi-blue}{[}\textcolor{ansi-blue}{"density"}\textcolor{ansi-blue}{]}\textcolor{ansi-blue}{.}MIS
+\textcolor{ansi-green-intense}{\textbf{      3}} 
+\textcolor{ansi-green-intense}{\textbf{      4}} \textcolor{ansi-red}{\# print the 1st array element (only element in a spin unpolarized calculation)}
+\textcolor{ansi-green-intense}{\textbf{      5}} print\textcolor{ansi-blue}{(}\textcolor{ansi-blue}{"MIS = "}\textcolor{ansi-blue}{,} round\textcolor{ansi-blue}{(}MIS\textcolor{ansi-blue}{[}\textcolor{ansi-cyan}{0}\textcolor{ansi-blue}{]}\textcolor{ansi-blue}{,} \textcolor{ansi-cyan}{2}\textcolor{ansi-blue}{)}\textcolor{ansi-blue}{)}
+
+\textcolor{ansi-red}{AttributeError}: 'Density' object has no attribute 'MIS'
+    \end{Verbatim}
 
     \hypertarget{calculation-of-mis-using-the-electron-localization-function}{%
 \subsection{Calculation of MIS using the electron localization
@@ -1123,7 +1188,7 @@ In atoMEC the ELF is accessed through the
 and plot the ELF for our Aluminium example.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{9}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} import localization module}
 \PY{k+kn}{from} \PY{n+nn}{atoMEC}\PY{n+nn}{.}\PY{n+nn}{postprocess} \PY{k+kn}{import} \PY{n}{localization}
@@ -1150,6 +1215,11 @@ and plot the ELF for our Aluminium example.
 \end{Verbatim}
 \end{tcolorbox}
 
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{supp_info_files/supp_info_27_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
     The next stage is to use the ELF to compute the number of electrons in a
 given shell. This is done by finding the positions of the minima of the
 ELF, and integrating the density between them, as explained in the main
