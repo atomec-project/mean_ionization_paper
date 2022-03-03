@@ -554,7 +554,7 @@ which approximations we use in our model, for example the boundary
 condition and exchange-correlation (XC) approximation.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{4}{\boxspacing}
+\prompt{In}{incolor}{3}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} import models}
 \PY{k+kn}{from} \PY{n+nn}{atoMEC} \PY{k+kn}{import} \PY{n}{models}
@@ -612,7 +612,7 @@ room temperature we do not need to include lots of states so we set
 \texttt{nmax=5}, \texttt{lmax=3}.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{5}{\boxspacing}
+\prompt{In}{incolor}{4}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} set the values of nmax and lmax}
 \PY{n}{nmax} \PY{o}{=} \PY{l+m+mi}{5}
@@ -689,7 +689,7 @@ Orbital occupations (2l+1) * f\_\{nl\} :
    2 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
 
 
-func:'CalcEnergy' took: 18.4109 sec
+func:'CalcEnergy' took: 22.4821 sec
     \end{Verbatim}
 
     In the above, at each step of the SCF (self-consistent field) cycle, the
@@ -762,7 +762,7 @@ potential and orbtials. For example, we can extract and plot the density
 from this output:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{16}{\boxspacing}
+\prompt{In}{incolor}{5}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} import matplotlib for plotting and numpy for analysis}
 \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
@@ -771,7 +771,7 @@ from this output:
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{17}{\boxspacing}
+\prompt{In}{incolor}{6}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} extract the density object}
 \PY{n}{dens\PYZus{}Al} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
@@ -789,7 +789,7 @@ from this output:
 \PY{n}{plt}\PY{o}{.}\PY{n}{ylim}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mf}{1.2}\PY{p}{)}
 \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}r}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{ (a\PYZus{}0)\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
 \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}r\PYZca{}2 n(r)}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{ (a\PYZus{}0)\PYZca{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZhy{}1\PYZcb{}\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{figures/density\PYZus{}example.pdf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -1058,7 +1058,7 @@ accessed through that if desired. For example, using the density of the
 existing output:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{21}{\boxspacing}
+\prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} first set up and run a calculation}
 
@@ -1085,62 +1085,10 @@ iscf   E\_free (Ha)    dE (1.0e-05)   dn (1.0e-04)   dv (1.0e-04)
    4   -240.2223529      4.911e-04      3.669e-02      1.591e-02
    5   -240.2240213      6.945e-06      3.220e-03      6.192e-03
    6   -240.2242092      7.821e-07      1.220e-03      2.565e-03
-   7   -240.2242934      3.505e-07      4.381e-04      9.761e-04
-   8   -240.2242345      2.452e-07      1.548e-04      5.180e-04
-   9   -240.2242347      1.176e-09      5.611e-05      2.181e-04
-  10   -240.2242491      5.990e-08      2.371e-05      1.273e-04
-  11   -240.2242348      5.976e-08      1.191e-05      1.630e-04
-  12   -240.2242348      2.855e-12      2.649e-06      6.672e-05
------------------------------------------------------------------
-SCF cycle converged
-
-Final energies (Ha)
-
----------------------------------------------
-Kinetic energy                 :   245.1184
-    orbitals                   :   245.1184
-    unbound ideal approx.      :     0.0000
-Electron-nuclear energy        :  -586.8083
-Hartree energy                 :   119.4855
-Exchange-correlation energy    :   -18.0172
-    exchange                   :   -17.0111
-    correlation                :    -1.0061
----------------------------------------------
-Total energy                   :  -240.2217
----------------------------------------------
-Entropy                        :     2.7034
-    orbitals                   :     2.7034
-    unbound ideal approx.      :     0.0000
----------------------------------------------
-Total free energy              :  -240.2242
----------------------------------------------
-
-Chemical potential             :   0.715
-Mean ionization state          :   3.000
-
-Orbital eigenvalues (Ha) :
-
-     |   n=l+1 |       2 |       3 |       4 |       5
------+---------+---------+---------+---------+---------
- l=0 | -54.508 |  -3.400 |   0.372 |   2.940 |   6.897
-   1 |  -2.026 |   0.717 |   3.210 |   6.972 |  11.930
-   2 |   1.132 |   3.266 |   6.530 |  10.962 |  16.544
-
-
-Orbital occupations (2l+1) * f\_\{nl\} :
-
-     |   n=l+1 |       2 |       3 |       4 |       5
------+---------+---------+---------+---------+---------
- l=0 |   2.000 |   2.000 |   2.000 |   0.000 |   0.000
-   1 |   6.000 |   1.000 |   0.000 |   0.000 |   0.000
-   2 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
-
-
-func:'CalcEnergy' took: 44.4105 sec
     \end{Verbatim}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{12}{\boxspacing}
+\prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} extract the MIS}
 \PY{n}{MIS} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{MIS}
@@ -1149,10 +1097,6 @@ func:'CalcEnergy' took: 44.4105 sec
 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MIS = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{MIS}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-MIS =  3.0
-    \end{Verbatim}
 
     \hypertarget{calculation-of-mis-using-the-electron-localization-function}{%
 \subsection{Calculation of MIS using the electron localization
@@ -1179,7 +1123,7 @@ In atoMEC the ELF is accessed through the
 and plot the ELF for our Aluminium example.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{34}{\boxspacing}
+\prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} import localization module}
 \PY{k+kn}{from} \PY{n+nn}{atoMEC}\PY{n+nn}{.}\PY{n+nn}{postprocess} \PY{k+kn}{import} \PY{n}{localization}
@@ -1201,15 +1145,11 @@ and plot the ELF for our Aluminium example.
 \PY{n}{plt}\PY{o}{.}\PY{n}{ylim}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.01}\PY{p}{,}\PY{l+m+mf}{1.01}\PY{p}{)}
 \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}r}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{ (a\PYZus{}0)\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ELF\PYZdl{}(r)\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{figures/ELF\PYZus{}example.pdf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}plt.show()}
 \end{Verbatim}
 \end{tcolorbox}
 
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Supplementary Information_files/Supplementary Information_27_0.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
     The next stage is to use the ELF to compute the number of electrons in a
 given shell. This is done by finding the positions of the minima of the
 ELF, and integrating the density between them, as explained in the main
@@ -1217,7 +1157,7 @@ paper. In atoMEC, we can access this data from the \texttt{N\_shell}
 property of the \texttt{ELFTools} object:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{40}{\boxspacing}
+\prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} extract the number of electrons per shell}
 \PY{n}{N\PYZus{}s} \PY{o}{=} \PY{n}{ELF\PYZus{}Al}\PY{o}{.}\PY{n}{N\PYZus{}shell}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
@@ -1226,12 +1166,6 @@ property of the \texttt{ELFTools} object:
     \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The number of electrons in the n =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{shell =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n+nb}{round}\PY{p}{(}\PY{n}{N\PYZus{}s}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-The number of electrons in the n = 1 shell = 2.13
-The number of electrons in the n = 2 shell = 7.72
-The number of electrons in the n = 3 shell = 3.11
-    \end{Verbatim}
 
     These numbers approximately match up to what we expect from ambient
 Aluminium: 2 electrons in the \(n=1\) shell, 8 in the \(n=2\) shell, and
