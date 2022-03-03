@@ -1,0 +1,1253 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Supplementary Information}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{average-atom-models-theoretical-background}{%
+\section{Average atom models: Theoretical
+background}\label{average-atom-models-theoretical-background}}
+
+In this section, we describe the average-atom model that we use and the
+equations that are solved. For a detailed derivation and discussion of
+the model, please see our earlier
+\href{https://arxiv.org/abs/2103.09928}{preprint}.
+
+As discussed in the main test, we solve the spherically symmetric
+Kohn--Sham (KS) equations for an atom at finite temperature, with
+appropriate boundary conditions imposed on the orbitals intended to
+mimic the effect of interactions from electrons and nuclei in
+neighbouring atoms. The spherically symmetric KS equations are given by
+
+\begin{equation}
+\left[\frac{\textrm{d}^2}{\textrm{d}r} + \frac{2}{r}\frac{\textrm{d}}{\textrm{d}r} - \frac{l(l+1)}{r^2} \right] X_{\epsilon nl}(r) + 2 \left[\epsilon^{\tau}_{knl} - v_\textrm{s}[n](r) \right] X_{\epsilon nl}(r) = 0,
+\end{equation}
+
+where \(v_\textrm{s}[n](r)\) is the KS potential, given by
+
+\begin{equation}
+ v_{\textrm{s}}[n](r) = -\frac{Z}{r} + 4\pi \int_0^{R_\textrm{WS}} \textrm{d}{x} \frac{n(x)x^2}{r^>(x)} + \frac{\delta F_\textrm{xc}^\tau [n]}{\delta n(r)}\,,
+\end{equation}
+
+where \(r^>(x)=\max(r,x)\). The three terms in the potential are
+respectively the electron-nuclear attraction, the classical Hartree
+repulsion, and the exchange-correlation (xc) potential, which is equal
+to the functional derivative of the xc free energy. As ever, due to the
+dependence of the KS potential on the density \(n(r)\), the KS equations
+must be solved iteratively until self-consistency is reached.
+
+One difference from the model presented in our earlier
+\href{https://arxiv.org/abs/2103.09928}{preprint} is that the orbitals
+now have an index \(\epsilon\), in addition to the \(n,l\) quantum
+numbers. This index is needed for the AA band-structure model, because
+it denotes the index of a given orbital within its energy band. If we do
+not employ the band-strucutre model, then this index is suppressed.
+
+In the general case, the density \(n(r)\) is constructed from the KS
+orbitals as
+
+\begin{equation}
+    n(r) = 2\sum_{nl}(2l+1)
+    \int_{\epsilon_{nl}^-}^{\epsilon_{nl}^+} \textrm{d}{\epsilon} g_{nl}(\epsilon) f_{nl}(\epsilon,\mu,\tau) |X_{nl\epsilon}(r)|^2\,,
+\end{equation}
+
+where \(g_{nl}(\epsilon)\) is the density-of-states (DOS) and
+\(f_{nl}(\epsilon,\mu,\tau)\) the Fermi--Dirac (FD) distribution, given
+by
+
+\begin{equation}
+f_{nl}(\epsilon,\mu,\tau) = \frac{1}{1+e^{(\epsilon_{nl}-\mu)/\tau}}\,.
+\end{equation}
+
+The chemical potential \(\mu\) is determined by fixing the electron
+number \(N_\textrm{e}=4\pi\int\textrm{d}r r^2 n(r)\) to be equal to a
+pre-determined value (in this paper, \(N_\textrm{e}=Z\) in all cases).
+In practice, the integral in the density is expressed as a sum over
+discrete orbitals,
+
+\begin{equation}
+ n(r) = 2\sum_{knl}(2l+1) w_{knl} g_{knl}(\epsilon_{knl},\epsilon_{nl}^\pm) f_{knl}(\epsilon_{knl},\mu,\tau) |X_{knl}(r)|^2\,,
+\end{equation}
+
+where \(w_{knl}\) is the integration weighting for the \(k\)-th index
+(with energy \(\epsilon_{knl}\)) of the \((n,l)\) energy band. We shall
+soon explain how the limits of the band energies \(\epsilon_{nl}^\pm\)
+are determined. When the band-structure model is not employed, the
+product \(w_{knl} g_{knl}(\epsilon_{knl}, \epsilon_{nl}^\pm)\equiv 1\)
+and hence the above expression simplifies to the more familiar
+expression for the density,
+
+\begin{equation}
+n(r) = 2\sum_{nl}(2l+1) f_{nl}(\epsilon_{nl},\mu,\tau) |X_{nl}(r)|^2\,.
+\end{equation}
+
+If the band-structure model is used, then the DOS function is given by
+
+\begin{gather}
+g_{knl}(\epsilon_{knl},\epsilon_{nl}^\pm) =\frac{2}{ \pi (\epsilon^+_{nl}-\epsilon_{nl}^-)^2} \sqrt{(\epsilon^+_{nl}-\epsilon_{knl})(\epsilon_{knl} - \epsilon^-_{nl})}\,.
+\end{gather}
+
+As discussed, we impose boundary conditions on the KS orbitals
+\(X_{nl}(r)\) which are intended to implicitly account for inter-atomic
+interactions. In our earlier
+\href{https://arxiv.org/abs/2103.09928}{preprint}, we argued that a
+physically intuitive condition was to impose smoothness of the density
+at the edge of the WS cell,
+
+\begin{equation}
+\frac{\textrm{d}n(r)}{\textrm{d}r}\Bigg|_{r=R_\textrm{WS}} =0\,.
+\end{equation}
+
+Mathematically there is no unique way to enforce the above condition,
+but two simple choices are
+
+\begin{align}
+0&=X_{nl}(R_\textrm{VS})\,, \\
+0&=\frac{\textrm{d}X_{nl}(r)}{\textrm{d}r}\Bigg|_{r=R_\textrm{WS}}\,,
+\end{align}
+
+which we refer to respectively as ``Dirichlet'' and ``Neumann''
+conditions. As discussed in the main text, the energy eigenvalues that
+result from these boundary conditions also define the upper and lower
+energy band limits \(\epsilon^{\pm}_{nl}\) for the band-structure model.
+
+    \hypertarget{introduction-to-atomec}{%
+\section{Introduction to atoMEC}\label{introduction-to-atomec}}
+
+For all calculations in the paper, we have used the open source
+average-atom code atoMEC. It can be downloaded
+\href{https://github.com/atomec-project/atoMEC}{here}.
+
+In this section, we go through the basics of setting up and then running
+a calcuation in atoMEC.
+
+We first create an \texttt{Atom} object which houses the key physical
+information about the system we want to study, i.e.~the temperature and
+mass density. We start with Aluminium at room temperature:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{load\PYZus{}ext} autoreload
+\PY{o}{\PYZpc{}}\PY{k}{autoreload} 2
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} import the Atom object}
+\PY{k+kn}{from} \PY{n+nn}{atoMEC} \PY{k+kn}{import} \PY{n}{Atom}
+
+\PY{c+c1}{\PYZsh{} set up the Aluminium atom}
+\PY{n}{Al\PYZus{}atom} \PY{o}{=} \PY{n}{Atom}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Al}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+m+mi}{300}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{l+m+mf}{2.7}\PY{p}{,} \PY{n}{units\PYZus{}temp}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{K}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Welcome to atoMEC!
+
+Warning: this input temperature is very low. Proceeding anyway, but results may
+not be accurate.
+Normal temperature range for atoMEC is 0.01 -- 100 eV
+
+Atomic information:
+
+Atomic species                : Al
+Atomic charge / weight        : 13  / 26.982
+Valence electrons             : 3
+Mass density                  : 2.7 g cm\^{}-3
+Voronoi sphere radius         : 2.997 Bohr / 1.586 Angstrom
+Electronic temperature        : 0.00095 Ha /  0.02585 eV / 300 K
+Wigner-Seitz radius           : 2.078 (Bohr)
+Ionic coupling parameter      : 2.967e+04
+Electron degeneracy parameter : 0.002228
+
+
+    \end{Verbatim}
+
+    We see this prints some key information about our system, including for
+example the ionic coupling and electron degeneracy parameters, which are
+important in warm dense matter (WDM). For details of how these are
+computed see our initial
+\href{https://arxiv.org/abs/2103.09928}{preprint} on AA models and
+documentation in the code.
+
+Next we set up a \texttt{model} object, which contains input regarding
+which approximations we use in our model, for example the boundary
+condition and exchange-correlation (XC) approximation.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} import models}
+\PY{k+kn}{from} \PY{n+nn}{atoMEC} \PY{k+kn}{import} \PY{n}{models}
+
+\PY{c+c1}{\PYZsh{} set up the ISModel}
+\PY{n}{Al\PYZus{}model} \PY{o}{=} \PY{n}{models}\PY{o}{.}\PY{n}{ISModel}\PY{p}{(}
+    \PY{n}{Al\PYZus{}atom}\PY{p}{,} \PY{n}{bc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dirichlet}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{unbound}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{quantum}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{xfunc\PYZus{}id}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{lda\PYZus{}x}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{cfunc\PYZus{}id}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{lda\PYZus{}c\PYZus{}pw}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Using Ion-Sphere model
+Ion-sphere model parameters:
+
+Spin-polarized                : False
+Number of electrons           : 13
+Exchange functional           : lda\_x
+Correlation functional        : lda\_c\_pw
+Boundary condition            : dirichlet
+Unbound electron treatment    : quantum
+Shift KS potential            : True
+
+
+    \end{Verbatim}
+
+    In the above, we have set up an ion-sphere model (\texttt{ISModel})
+which so far is the only kind of AA model implemented in atoMEC.
+Furthermore, we have specified the following approximations:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{unbound="quantum"}: This means all our KS orbitals are treated
+  in the same way, regardless of their energy
+\item
+  \texttt{bc="dirichlet"}: The Dirichlet boundary condition (as
+  described in the main text) is applied to the orbitals
+\item
+  \texttt{xfunc\_id="lda\_x"}, \texttt{cfunc\_id="lda\_c\_pw"}: We have
+  chosen the LDA XC functional
+\end{itemize}
+
+We are now ready to run an SCF calculation, which is done by the
+\texttt{CalcEnergy} function. There are various inputs to this function
+which control numerical aspects, such as the number of grid points and
+SCF convergence parameters. Most of these are optional so we use the
+default values for now.
+
+The two parameters which must be specified are the maximal value of the
+principal and angular quantum numbers, \texttt{nmax} and \texttt{lmax}.
+atoMEC will search for all the eigenvalues in the range
+\(0<n<\textrm{nmax}\), \(0<l<\textrm{lmax}\). Since we have a system at
+room temperature we do not need to include lots of states so we set
+\texttt{nmax=5}, \texttt{lmax=3}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} set the values of nmax and lmax}
+\PY{n}{nmax} \PY{o}{=} \PY{l+m+mi}{5}
+\PY{n}{lmax} \PY{o}{=} \PY{l+m+mi}{3}
+
+\PY{c+c1}{\PYZsh{} run the SCF calculation}
+\PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}\PY{n}{nmax}\PY{p}{,} \PY{n}{lmax}\PY{p}{,} \PY{n}{scf\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mixfrac}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.6}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{maxscf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{50}\PY{p}{\PYZcb{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Starting SCF energy calculation
+
+iscf   E\_free (Ha)    dE (1.0e-05)   dn (1.0e-04)   dv (1.0e-04)
+-----------------------------------------------------------------
+   0   -210.9503289      1.000e+00      9.999e-01      1.000e+00
+   1   -222.7062710      5.279e-02      1.006e+00      7.357e-01
+   2   -235.5939281      5.470e-02      7.726e-01      3.973e-01
+   3   -240.4608125      2.024e-02      1.988e-01      6.811e-02
+   4   -240.5743831      4.721e-04      3.588e-02      1.554e-02
+   5   -240.5758261      5.998e-06      3.137e-03      6.085e-03
+   6   -240.5760477      9.209e-07      1.177e-03      2.093e-03
+   7   -240.5759785      2.877e-07      4.315e-04      1.424e-03
+   8   -240.5759149      2.642e-07      1.589e-04      4.043e-04
+   9   -240.5759773      2.591e-07      5.434e-05      4.030e-04
+  10   -240.5762078      9.581e-07      2.391e-05      5.248e-04
+  11   -240.5759770      9.593e-07      1.686e-05      4.910e-04
+  12   -240.5760313      2.257e-07      8.626e-06      4.579e-04
+  13   -240.5759432      3.663e-07      8.147e-06      3.143e-04
+  14   -240.5760022      2.453e-07      5.269e-06      2.410e-04
+  15   -240.5760397      1.558e-07      4.717e-06      9.087e-05
+-----------------------------------------------------------------
+SCF cycle converged
+
+Final energies (Ha)
+
+---------------------------------------------
+Kinetic energy                 :   245.4007
+    orbitals                   :   245.4007
+    unbound ideal approx.      :     0.0000
+Electron-nuclear energy        :  -587.2873
+Hartree energy                 :   119.3529
+Exchange-correlation energy    :   -18.0414
+    exchange                   :   -17.0347
+    correlation                :    -1.0067
+---------------------------------------------
+Total energy                   :  -240.5751
+---------------------------------------------
+Entropy                        :     2.7034
+    orbitals                   :     2.7034
+    unbound ideal approx.      :     0.0000
+---------------------------------------------
+Total free energy              :  -240.5777
+---------------------------------------------
+
+Chemical potential             :   0.699
+Mean ionization state          :   3.000
+
+Orbital eigenvalues (Ha) :
+
+     |   n=l+1 |       2 |       3 |       4 |       5
+-----+---------+---------+---------+---------+---------
+ l=0 | -54.552 |  -3.446 |   0.356 |   2.925 |   6.879
+   1 |  -2.070 |   0.700 |   3.194 |   6.954 |  11.912
+   2 |   1.118 |   3.249 |   6.508 |  10.939 |  16.522
+
+
+Orbital occupations (2l+1) * f\_\{nl\} :
+
+     |   n=l+1 |       2 |       3 |       4 |       5
+-----+---------+---------+---------+---------+---------
+ l=0 |   2.000 |   2.000 |   2.000 |   0.000 |   0.000
+   1 |   6.000 |   1.000 |   0.000 |   0.000 |   0.000
+   2 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
+
+
+func:'CalcEnergy' took: 18.4109 sec
+    \end{Verbatim}
+
+    In the above, at each step of the SCF (self-consistent field) cycle, the
+spherically symmetric KS equations are solved for the chosen boundary
+condition (Eq. (2) of the main paper). In atoMEC, we solve the KS
+equations on a logarithmic grid to give more weight to the points
+nearest the origin, i.e.~\(x=\log(r)\). Furthermore, we make a
+transformation of the orbitals \(P_{nl}(x) = X_{nl}(x)\exp(x/2)\). Then
+the equations to be solve become:
+
+\begin{gather}
+\frac{\textrm{d}^2 P_{nl}(x)}{\textrm{d}x^2} - 2e^{2x}(W(x)-\epsilon_{nl})P_{nl}(x)=0\,,\\
+W(x) = v_\textrm{s}[n](x) + \frac{1}{2}\left(l+\frac{1}{2}\right)^2 e^{-2x}
+\end{gather}
+
+In atoMEC, we solve the KS equations using a matrix implementation of
+Numerov's algorithm as described in
+\href{https://aapt.scitation.org/doi/full/10.1119/1.4748813?casa_token=UMs6bxc3iB0AAAAA\%3AonvjnFq-KyEXZpEzUfGfyqQoNrMoP6AI0Wi7nrZrILOCM9Ah55XACGen5VLr-civFUtr2sVuCpw}{this
+paper}. This means we diagonalize the following equation: \begin{align}
+\hat{H}\vec{P} &= \vec{\epsilon} \hat{B} \vec{P} \\
+\hat{H} &= \hat{T} + \hat{B} + W_\textrm{s}(\vec{x}) \\
+\hat{T} &= -\frac{1}{2} e^{-2\vec{x}} \hat{A} \\
+\hat{A} &= \frac{\hat{I}_{-1} -2\hat{I}_0 + \hat{I}_1}{\textrm{d}x^2} \\
+\hat{B} &= \frac{\hat{I}_{-1} +10\hat{I}_0 + \hat{I}_1}{12}\,,
+\end{align} where \(\hat{I}_{-1/0/1}\) are lower shift, identify and
+upper shift matrices.
+
+Since the Hamiltonian matrix \(H\) is sparse and we only seek the lowest
+lying eigenvalues, there is no need to perform a full diagonalization
+which scales with \(\mathcal{O}(N^3)\), with \(N\) being the size of the
+radial grid. Instead, we use a sparse matrix diagonalization routine
+from the \href{https://scipy.org/}{SciPy} library, which scales more
+efficiently and allows us to go to larger grid sizes (and hence better
+convergence).
+
+After each step in the SCF cycle, the relative changes in the free
+energy \(F\), density \(n\) and potential \(v_\textrm{s}\) are computed.
+Specifically, the quantities computed are
+
+\begin{align}
+    \Delta F &= \left|\frac{F^{i}-F^{i-1}}{F^{i}}\right| \\
+    \Delta n &= \frac{\int \mathrm{d}r|n^i(r)-n^{i-1}(r)|}{\int \mathrm{d}r n^i(r)}\\
+    \Delta v &= \frac{\int \mathrm{d}r|v^i_\textrm{s}(r)-v_\textrm{s}^{i-1}(r)|}{\int \mathrm{d}r v_\textrm{s}^i(r)}
+\end{align}
+
+The values of these convergence parameters are controlled by the input
+parameter \texttt{conv\_params} to the \texttt{CalcEnergy} function. For
+example, if we wanted to reduce the required convergence, we could call:
+
+\texttt{output=Al\_model.CalcEnergy(nmax,\ lmax,\ conv\_params=\{"econv":\ 1e-4,\ "nconv":\ 1e-3,\ "vconv":\ 1e-3\})}
+
+At each stage of the SCF cycle, the KS potential is mixed with some
+fraction of the KS potential from the previous iteration (which aids
+convergence),
+i.e.~\(v_\textrm{s}(r) = \alpha v^{i+1}_\textrm{s}(r) + (1-\alpha) v^i_\textrm{s}(r)\),
+where \(\alpha\) is the mixing paramater. As seen above, this is
+controlled via the \texttt{scf\_params} input parameter to the
+\texttt{CalcEnergy} function. This dictionary also accepts a
+\texttt{maxscf} key to terminate the SCF cycle after the requested
+number of iterations.
+
+At the end of the SCF cycle, various information is printed, such as the
+breakdown of the total free energy and the KS eigenvalues and their
+occupations. The printed `'Mean ionization state'' (MIS) output is
+calculated using the threshold method described in the main paper. We
+shall later see how to compute the MIS in atoMEC via the other methods
+described in the paper. The output of the \texttt{CalcEnergy} function
+is a dictionary containing information about the energy, density,
+potential and orbtials. For example, we can extract and plot the density
+from this output:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} import matplotlib for plotting and numpy for analysis}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} extract the density object}
+\PY{n}{dens\PYZus{}Al} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} get the total density and grid}
+\PY{n}{dens\PYZus{}tot} \PY{o}{=} \PY{n}{dens\PYZus{}Al}\PY{o}{.}\PY{n}{total}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{xgrid} \PY{o}{=} \PY{n}{dens\PYZus{}Al}\PY{o}{.}\PY{n}{\PYZus{}xgrid}  \PY{c+c1}{\PYZsh{} log grid}
+\PY{n}{rgrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{xgrid}\PY{p}{)}  \PY{c+c1}{\PYZsh{} radial grid}
+
+\PY{c+c1}{\PYZsh{} plot the total density}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{rgrid}\PY{p}{,} \PY{n}{rgrid} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{2} \PY{o}{*} \PY{n}{dens\PYZus{}tot}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} some formatting}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylim}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mf}{1.2}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}r}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{ (a\PYZus{}0)\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}r\PYZca{}2 n(r)}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{ (a\PYZus{}0)\PYZca{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZhy{}1\PYZcb{}\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Supplementary Information_files/Supplementary Information_10_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{convergence-testing}{%
+\subsection{Convergence testing}\label{convergence-testing}}
+
+There are various parameters which should be checked for convergence.
+For all the boundary conditions, the main ones are:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{nmax}: the maximum number of the principal quantum number
+  \texttt{n}
+\item
+  \texttt{lmax}: the maximum number of the angular quantum number
+  \texttt{l}
+\item
+  \texttt{grid\_params}: dictionary parameter controlling the
+  logarithmic grid, in particular the number of grid points
+  \texttt{ngrid}
+\end{itemize}
+
+Furthermore, for the \texttt{bands} boundary condition, there is the
+additional dictionary parameter \texttt{band\_params}. The important
+property within this is \texttt{nkpts} number of `k' points, which is
+the number of states that are computed within all energy bands (spaced
+linearly in energy) in our model.
+
+The convergence for the \texttt{nmax} and \texttt{lmax} paramaters can
+generally be chosen by eye, in other words by ensuring there are
+sufficient states such that the highest levels have (nearly) zero
+occoupations. Let us consider our Aluminium atom from earlier, but now
+we shall increase the temperature (so more orbitals are required).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} set the temperature to 10 eV}
+\PY{n}{Al\PYZus{}atom}\PY{o}{.}\PY{n}{units\PYZus{}temp}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{eV}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{Al\PYZus{}atom}\PY{o}{.}\PY{n}{temp} \PY{o}{=} \PY{l+m+mi}{10}
+
+\PY{c+c1}{\PYZsh{} run the calculation again}
+\PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}\PY{n}{nmax}\PY{p}{,} \PY{n}{lmax}\PY{p}{,} \PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    In the above example, we see that \texttt{nmax=5} seems to be
+sufficiently large, but \texttt{lmax=2} is not, because the occupation
+of the \(l=2,n=0\) state is 0.834, i.e.~significantly above zero. We
+therefore choose a much larger value of \texttt{lmax} to check what is
+required for convergence.
+
+Since the diagonalization must be performed separately for every value
+of \(0<l<\textrm{lmax}\), the computational time is proportional to
+\texttt{lmax}. There is a simple kind of parallelization implemented in
+atoMEC, courtesy of the
+\href{https://joblib.readthedocs.io/en/latest/\#}{joblib} library, which
+parallelizes the calculation over \texttt{l} (and also spin if
+\texttt{model.spinpol=True}) and thus makes calculations more efficient.
+This is enabled by the \texttt{config.numcores} parameter. Setting
+\texttt{config.numcores=n} uses \texttt{n} cores; however, it is often
+easiest to set \texttt{config.numcores=-1} which uses all the available
+cores.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}enable parallelization}
+\PY{k+kn}{from} \PY{n+nn}{atoMEC} \PY{k+kn}{import} \PY{n}{config}
+\PY{n}{config}\PY{o}{.}\PY{n}{numcores} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+
+\PY{c+c1}{\PYZsh{} re\PYZhy{}run the calculation with larger lmax}
+\PY{n}{lmax} \PY{o}{=} \PY{l+m+mi}{10}
+\PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}\PY{n}{nmax}\PY{p}{,} \PY{n}{lmax}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    In the above, we clearly see that \texttt{lmax=10} is more than
+sufficient; in fact, it seems that \texttt{lmax=6} is enough in this
+case. Next, we shall test the convergence with respect to the number of
+grid points. We suppress the output from the SCF cycle since we shall
+run several calculations. If you are running this notebook, be patient
+as running all the calculations will take some time.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} set up the grid points to test over}
+\PY{n}{ngrid\PYZus{}test} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{500}\PY{p}{,} \PY{l+m+mi}{4500}\PY{p}{,} \PY{l+m+mi}{500}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} set up array to store the total energy, 1s core energy and chemical potential}
+\PY{n}{output\PYZus{}arr} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{ngrid\PYZus{}test}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} reset lmax to 6}
+\PY{n}{lmax} \PY{o}{=} \PY{l+m+mi}{6}
+
+\PY{c+c1}{\PYZsh{} loop over the ngrid array}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{ngrid} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{ngrid\PYZus{}test}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Running calculation for }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ngrid}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{grid pts}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}\PY{n}{nmax}\PY{p}{,} \PY{n}{lmax}\PY{p}{,} \PY{n}{grid\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ngrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{ngrid}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{ngrid}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{energy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{F\PYZus{}tot}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{eigvals}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]} \PY{o}{=} \PY{n}{config}\PY{o}{.}\PY{n}{mu}
+\end{Verbatim}
+\end{tcolorbox}
+
+    We tabulate the total energy, core \(1s\) energy level and chemical
+potential \(mu\) below to check their convergence with respect to the
+grid size.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} import package to make nice tables}
+\PY{k+kn}{import} \PY{n+nn}{tabulate}
+
+\PY{c+c1}{\PYZsh{} define table headings}
+\PY{n}{headers} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ngrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{F tot}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{e\PYZus{}1s}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} create table}
+\PY{n}{conv\PYZus{}tbl} \PY{o}{=} \PY{n}{tabulate}\PY{o}{.}\PY{n}{tabulate}\PY{p}{(}
+    \PY{n}{output\PYZus{}arr}\PY{p}{,}
+    \PY{n}{headers}\PY{p}{,}
+    \PY{n}{tablefmt}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{presto}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{floatfmt}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{4.0f}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{7.3f}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{7.3f}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{7.3f}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}
+    \PY{n}{stralign}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{conv\PYZus{}tbl}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    The degree of convergence required depends on various factors, such as
+the error that the user is willing to tolerate and the property that is
+being computed. In AA models, there are already a number of quite
+serious approximations which create uncertainty in the results, so
+typically we can use more relaxed convergence criteria than a full
+DFT-MD simulation. The property we are interested in for the purposes of
+this paper is the MIS, which is sensitive to the energy eigenvalues and
+chemical potential but not the total energy. Furthermore, we aim to
+benchmark our results agaist experiments which of course have some
+uncertainty for measurements of the free electron density.
+
+With the above factors taken into account, we typically aim for
+convergence of around \(0.01\ \textrm{Ha}\) in the core \(1s\) energy
+level and the chemical potential \(\mu\). Based on the above table, this
+indicates a reasonable choice is \texttt{ngrid=3000}. In theory, this
+number should be checked for each value of temperature and density
+calculated. In practise, it is reasonable to test it for a few select
+values in the temperature or density range spanned and interpolate to
+the other values.
+
+As mentioned, when the \texttt{bands} boundary condition is used, we
+must also test convergence with respect to the number of orbitals
+\texttt{nkpts} per band. We perform a similar convergence check to
+before, only now we shall we probe the lowest energy eigenvalue in the
+conduction band, instead of the \(1s\) core energy level. This is
+because, under these conditions, the \(1s\) level is fully isolated from
+the neighbouring spheres and so is not part of an energy band.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} set up the nkpts array}
+\PY{n}{nkpts\PYZus{}arr} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{110}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} change the boundary condition}
+\PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{bc} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bands}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{c+c1}{\PYZsh{} reset the output array}
+\PY{n}{output\PYZus{}arr} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{nkpts\PYZus{}arr}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} loop over the nkpts array}
+\PY{c+c1}{\PYZsh{} use a coarse value of ngrid since we are performing an independent kpt check}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{nkpts} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{nkpts\PYZus{}arr}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Running calculation for }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{nkpts}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals per band}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}\PY{n}{nmax}\PY{p}{,} \PY{n}{lmax}\PY{p}{,} \PY{n}{grid\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ngrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{1000}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{band\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{nkpts}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{n}{nkpts}\PY{p}{\PYZcb{}}\PY{p}{)}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{nkpts}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{energy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{F\PYZus{}tot}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{eigvals}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]} \PY{o}{=} \PY{n}{config}\PY{o}{.}\PY{n}{mu}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} create table}
+\PY{n}{headers} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{nkpts}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{F tot}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{e\PYZus{}c}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{n}{conv\PYZus{}tbl} \PY{o}{=} \PY{n}{tabulate}\PY{o}{.}\PY{n}{tabulate}\PY{p}{(}
+    \PY{n}{output\PYZus{}arr}\PY{p}{,}
+    \PY{n}{headers}\PY{p}{,}
+    \PY{n}{tablefmt}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{presto}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{floatfmt}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{4.0f}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{7.3f}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{7.3f}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{7.3f}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}
+    \PY{n}{stralign}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{right}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{conv\PYZus{}tbl}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    We see from the above that, for this example, the quantities of interest
+are very well converged already with \texttt{nkpts=20}. However, the
+time taken is almost identical regardless of the number of \(k\)-points
+used. This is because the computationally dominant step is actually the
+diagonalization of the Hamiltonian, which is required to find the limits
+of the band energies. Therefore we are free to choose a relatively large
+value of \texttt{nkpts} without much affect on the computational
+demands. Typically the default value of \texttt{nkpts=50} in atoMEC is a
+reasonable choice.
+
+    \hypertarget{mean-ionization-state-comparisons}{%
+\section{Mean ionization state
+comparisons}\label{mean-ionization-state-comparisons}}
+
+In the previous section, we introduced the basics of running a
+calculation in atoMEC to compute various quantities such as the KS
+orbitals and the density. In this section, we explain how to compute the
+MIS in atoMEC via the various methods described in the paper.
+Afterwards, we provide the input (and output) for the calculations that
+were done in the paper, so that the reader can reproduce these results.
+
+\hypertarget{calculation-of-mis-using-the-threshold-method}{%
+\subsection{Calculation of MIS using the threshold
+method}\label{calculation-of-mis-using-the-threshold-method}}
+
+As seen in Eq. (1) of the main paper, the MIS can be computed as the
+integral over all the positive energy states:
+
+\begin{equation}
+\bar{Z} = \int_{v(R_\textrm{WS})}^\infty g(\epsilon) f_\textrm{FD}(\epsilon)\,,
+\end{equation}
+
+where \(g(\epsilon)\) is the density-of-states (DOS),
+\(f_\textrm{FD}(\epsilon)\) the Fermi--Dirac distribution, and
+\(v(R_\textrm{WS})\) the value of the potential at the Wigner--Seitz
+(WS) radius.
+
+In atoMEC, when \texttt{unbound="quantum"}, all the orbitals are treated
+identically. The integral in the above equation therefore becomes a sum
+over all the states with energies above \(v(R_\textrm{WS})\),
+
+\begin{equation}
+\bar{Z} = \sum_{k,\sigma,l,n} (2l+1) w_{k\sigma ln} g_{k\sigma ln} f_{k\sigma ln} \Theta(\epsilon_{k\sigma ln}-v(R_\textrm{WS}))\,,
+\end{equation}
+
+where \(\Theta\) is the Heaviside step function. The four indices
+\(k,\sigma,l,n\) of the various orbital dependent quantities are
+respectively the \(k\)-point index of the band, and the spin, angular
+momentum and principal quantum numbers. \(w_{k\sigma ln}\) is the
+\(k\)-point integral weighting for the \texttt{"bands"} boundary
+condition. For the \texttt{"dirichlet"} and \texttt{"neumann"}
+conditions, both this integral weighting and the DOS \(g_{k\sigma ln}\)
+are identically one (in this case, there is only ever a single \(k\)
+point since there are no bands).
+
+As was seen in the earlier examples, the MIS calculate via the threshold
+method is printed by default at the end of every SCF run anyway. It is
+also a property of the \texttt{staticKS.Density} object so can be
+accessed through that if desired. For example, using the density of the
+existing output:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} first set up and run a calculation}
+
+\PY{c+c1}{\PYZsh{} set the values of nmax and lmax}
+\PY{n}{nmax} \PY{o}{=} \PY{l+m+mi}{5}
+\PY{n}{lmax} \PY{o}{=} \PY{l+m+mi}{3}
+
+\PY{c+c1}{\PYZsh{} run the SCF calculation}
+\PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}
+    \PY{n}{nmax}\PY{p}{,} \PY{n}{lmax}\PY{p}{,} \PY{n}{scf\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mixfrac}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.6}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{maxscf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{50}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{grid\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ngrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{2000}\PY{p}{\PYZcb{}}
+\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Starting SCF energy calculation
+
+iscf   E\_free (Ha)    dE (1.0e-05)   dn (1.0e-04)   dv (1.0e-04)
+-----------------------------------------------------------------
+   0   -210.1742176      1.000e+00      9.999e-01      1.000e+00
+   1   -221.6716261      5.187e-02      1.025e+00      7.388e-01
+   2   -234.9602943      5.656e-02      7.885e-01      4.043e-01
+   3   -240.1043827      2.142e-02      2.046e-01      6.814e-02
+   4   -240.2223529      4.911e-04      3.669e-02      1.591e-02
+   5   -240.2240213      6.945e-06      3.220e-03      6.192e-03
+   6   -240.2242092      7.821e-07      1.220e-03      2.565e-03
+   7   -240.2242934      3.505e-07      4.381e-04      9.761e-04
+   8   -240.2242345      2.452e-07      1.548e-04      5.180e-04
+   9   -240.2242347      1.176e-09      5.611e-05      2.181e-04
+  10   -240.2242491      5.990e-08      2.371e-05      1.273e-04
+  11   -240.2242348      5.976e-08      1.191e-05      1.630e-04
+  12   -240.2242348      2.855e-12      2.649e-06      6.672e-05
+-----------------------------------------------------------------
+SCF cycle converged
+
+Final energies (Ha)
+
+---------------------------------------------
+Kinetic energy                 :   245.1184
+    orbitals                   :   245.1184
+    unbound ideal approx.      :     0.0000
+Electron-nuclear energy        :  -586.8083
+Hartree energy                 :   119.4855
+Exchange-correlation energy    :   -18.0172
+    exchange                   :   -17.0111
+    correlation                :    -1.0061
+---------------------------------------------
+Total energy                   :  -240.2217
+---------------------------------------------
+Entropy                        :     2.7034
+    orbitals                   :     2.7034
+    unbound ideal approx.      :     0.0000
+---------------------------------------------
+Total free energy              :  -240.2242
+---------------------------------------------
+
+Chemical potential             :   0.715
+Mean ionization state          :   3.000
+
+Orbital eigenvalues (Ha) :
+
+     |   n=l+1 |       2 |       3 |       4 |       5
+-----+---------+---------+---------+---------+---------
+ l=0 | -54.508 |  -3.400 |   0.372 |   2.940 |   6.897
+   1 |  -2.026 |   0.717 |   3.210 |   6.972 |  11.930
+   2 |   1.132 |   3.266 |   6.530 |  10.962 |  16.544
+
+
+Orbital occupations (2l+1) * f\_\{nl\} :
+
+     |   n=l+1 |       2 |       3 |       4 |       5
+-----+---------+---------+---------+---------+---------
+ l=0 |   2.000 |   2.000 |   2.000 |   0.000 |   0.000
+   1 |   6.000 |   1.000 |   0.000 |   0.000 |   0.000
+   2 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
+
+
+func:'CalcEnergy' took: 44.4105 sec
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} extract the MIS}
+\PY{n}{MIS} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{MIS}
+
+\PY{c+c1}{\PYZsh{} print the 1st array element (only element in a spin unpolarized calculation)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MIS = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{MIS}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+MIS =  3.0
+    \end{Verbatim}
+
+    \hypertarget{calculation-of-mis-using-the-electron-localization-function}{%
+\subsection{Calculation of MIS using the electron localization
+function}\label{calculation-of-mis-using-the-electron-localization-function}}
+
+As seen in Eq. (4) of the main paper, the electron localization function
+(ELF) is defined as
+
+\begin{gather}
+\textrm{ELF}(r) = \frac{1}{1+[D(\vec{r})/D_0(\vec{r})]^2}\,,\textrm{ with} \\
+D(\vec{r}) = D_0(\vec{r}) - \frac{1}{9} \frac{|\nabla n(\vec{r})^2|}{n(\vec{r})} + \frac{1}{6}\nabla^2 n(\vec{r})\,, \textrm{ and} \\
+D_0(\vec{r}) = \frac{3}{10}(3\pi^2)^{2/3} n^{5/3}(r)\,.
+\end{gather}
+
+For a spherically symmetric system, \(D_0(r)=D_0(\vec{r})\) and the
+expression for \(D(r)\) becomes
+
+\begin{equation}
+D(r) = D_0(r) - \frac{1}{9} \frac{1}{n(r)} \left| \frac{\textrm{d}n(r)}{\textrm{d}r}\right|^2 + \frac{1}{6} \left(  \frac{2}{r} \frac{\textrm{d}n(r)}{\textrm{d}r} +  \frac{\textrm{d}^2 n(r)}{\textrm{d}r^2}\right)\,.
+\end{equation}
+
+In atoMEC the ELF is accessed through the
+\texttt{postprocess.localization} module. In the following, we calculate
+and plot the ELF for our Aluminium example.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} import localization module}
+\PY{k+kn}{from} \PY{n+nn}{atoMEC}\PY{n+nn}{.}\PY{n+nn}{postprocess} \PY{k+kn}{import} \PY{n}{localization}
+
+\PY{c+c1}{\PYZsh{} Set up the ELF object}
+\PY{c+c1}{\PYZsh{} use the \PYZdq{}density\PYZdq{} version of the ELF (uses second order gradient expansion for KED)}
+
+\PY{n}{ELF\PYZus{}Al} \PY{o}{=} \PY{n}{localization}\PY{o}{.}\PY{n}{ELFTools}\PY{p}{(}\PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{method}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{xgrid} \PY{o}{=} \PY{n}{ELF\PYZus{}Al}\PY{o}{.}\PY{n}{\PYZus{}xgrid}
+\PY{n}{rgrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{xgrid}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} extract the ELF function}
+\PY{n}{ELF\PYZus{}func} \PY{o}{=} \PY{n}{ELF\PYZus{}Al}\PY{o}{.}\PY{n}{ELF}
+
+\PY{c+c1}{\PYZsh{} plot the ELF function}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{rgrid}\PY{p}{,} \PY{n}{ELF\PYZus{}func}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.01}\PY{p}{,}\PY{l+m+mf}{3.01}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylim}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.01}\PY{p}{,}\PY{l+m+mf}{1.01}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}r}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{ (a\PYZus{}0)\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ELF\PYZdl{}(r)\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Supplementary Information_files/Supplementary Information_27_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The next stage is to use the ELF to compute the number of electrons in a
+given shell. This is done by finding the positions of the minima of the
+ELF, and integrating the density between them, as explained in the main
+paper. In atoMEC, we can access this data from the \texttt{N\_shell}
+property of the \texttt{ELFTools} object:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{40}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} extract the number of electrons per shell}
+\PY{n}{N\PYZus{}s} \PY{o}{=} \PY{n}{ELF\PYZus{}Al}\PY{o}{.}\PY{n}{N\PYZus{}shell}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{N\PYZus{}s}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The number of electrons in the n =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{shell =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n+nb}{round}\PY{p}{(}\PY{n}{N\PYZus{}s}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The number of electrons in the n = 1 shell = 2.13
+The number of electrons in the n = 2 shell = 7.72
+The number of electrons in the n = 3 shell = 3.11
+    \end{Verbatim}
+
+    These numbers approximately match up to what we expect from ambient
+Aluminium: 2 electrons in the \(n=1\) shell, 8 in the \(n=2\) shell, and
+the remaining 3 electrons in the conduction band (which we call the
+\(n=3\) shell here). As discussed in the main paper, extracting the MIS
+from this output requires some user input based on physical intuition,
+to decide which shells should be counted as bound and which free. We
+shall explain our choices in the results section.
+
+    \hypertarget{calculation-of-the-mis-using-the-kubogreenwood-formula}{%
+\subsection{Calculation of the MIS using the Kubo--Greenwood
+formula}\label{calculation-of-the-mis-using-the-kubogreenwood-formula}}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
