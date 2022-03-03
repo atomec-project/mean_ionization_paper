@@ -689,7 +689,7 @@ Orbital occupations (2l+1) * f\_\{nl\} :
    2 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
 
 
-func:'CalcEnergy' took: 22.4821 sec
+func:'CalcEnergy' took: 19.4344 sec
     \end{Verbatim}
 
     In the above, at each step of the SCF (self-consistent field) cycle, the
@@ -831,7 +831,7 @@ occoupations. Let us consider our Aluminium atom from earlier, but now
 we shall increase the temperature (so more orbitals are required).
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{7}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} set the temperature to 10 eV}
 \PY{n}{Al\PYZus{}atom}\PY{o}{.}\PY{n}{units\PYZus{}temp}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{eV}\PY{l+s+s2}{\PYZdq{}}
@@ -841,6 +841,70 @@ we shall increase the temperature (so more orbitals are required).
 \PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}\PY{n}{nmax}\PY{p}{,} \PY{n}{lmax}\PY{p}{,} \PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Starting SCF energy calculation
+
+iscf   E\_free (Ha)    dE (1.0e-05)   dn (1.0e-04)   dv (1.0e-04)
+-----------------------------------------------------------------
+   0   -214.2613678      1.000e+00      9.999e-01      1.000e+00
+   1   -224.1287430      4.403e-02      1.020e+00      7.395e-01
+   2   -237.0838124      5.464e-02      8.010e-01      4.294e-01
+   3   -242.4343199      2.207e-02      2.026e-01      6.883e-02
+   4   -242.5475915      4.670e-04      3.594e-02      1.508e-02
+   5   -242.5491121      6.269e-06      3.520e-03      6.318e-03
+   6   -242.5492575      5.992e-07      1.319e-03      2.665e-03
+   7   -242.5492674      4.081e-08      4.664e-04      1.134e-03
+   8   -242.5492662      4.693e-09      1.654e-04      4.839e-04
+   9   -242.5492654      3.390e-09      5.894e-05      2.061e-04
+  10   -242.5492651      1.177e-09      2.111e-05      8.756e-05
+-----------------------------------------------------------------
+SCF cycle converged
+
+Final energies (Ha)
+
+---------------------------------------------
+Kinetic energy                 :   245.0512
+    orbitals                   :   245.0512
+    unbound ideal approx.      :     0.0000
+Electron-nuclear energy        :  -585.8430
+Hartree energy                 :   119.0002
+Exchange-correlation energy    :   -17.9878
+    exchange                   :   -16.9823
+    correlation                :    -1.0056
+---------------------------------------------
+Total energy                   :  -239.7795
+---------------------------------------------
+Entropy                        :     7.5369
+    orbitals                   :     7.5369
+    unbound ideal approx.      :     0.0000
+---------------------------------------------
+Total free energy              :  -242.5493
+---------------------------------------------
+
+Chemical potential             :   0.233
+Mean ionization state          :   3.011
+
+Orbital eigenvalues (Ha) :
+
+     |   n=l+1 |       2 |       3 |       4 |       5
+-----+---------+---------+---------+---------+---------
+ l=0 | -54.614 |  -3.469 |   0.351 |   2.916 |   6.870
+   1 |  -2.095 |   0.695 |   3.185 |   6.944 |  11.902
+   2 |   1.115 |   3.241 |   6.500 |  10.930 |  16.512
+
+
+Orbital occupations (2l+1) * f\_\{nl\} :
+
+     |   n=l+1 |       2 |       3 |       4 |       5
+-----+---------+---------+---------+---------+---------
+ l=0 |   2.000 |   2.000 |   0.841 |   0.001 |   0.000
+   1 |   5.989 |   1.330 |   0.002 |   0.000 |   0.000
+   2 |   0.834 |   0.003 |   0.000 |   0.000 |   0.000
+
+
+func:'CalcEnergy' took: 16.1646 sec
+    \end{Verbatim}
 
     In the above example, we see that \texttt{nmax=5} seems to be
 sufficiently large, but \texttt{lmax=2} is not, because the occupation
@@ -861,7 +925,7 @@ easiest to set \texttt{config.numcores=-1} which uses all the available
 cores.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{8}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{}enable parallelization}
 \PY{k+kn}{from} \PY{n+nn}{atoMEC} \PY{k+kn}{import} \PY{n}{config}
@@ -873,6 +937,81 @@ cores.
 \end{Verbatim}
 \end{tcolorbox}
 
+    \begin{Verbatim}[commandchars=\\\{\}]
+Starting SCF energy calculation
+
+iscf   E\_free (Ha)    dE (1.0e-05)   dn (1.0e-04)   dv (1.0e-04)
+-----------------------------------------------------------------
+   0   -214.2614028      1.000e+00      9.999e-01      1.000e+00
+   1   -223.8611104      4.288e-02      1.026e+00      7.419e-01
+   2   -237.0092438      5.548e-02      8.081e-01      4.366e-01
+   3   -242.4583678      2.247e-02      2.045e-01      7.008e-02
+   4   -242.5740042      4.767e-04      3.631e-02      1.569e-02
+   5   -242.5755083      6.200e-06      3.614e-03      6.157e-03
+   6   -242.5765476      4.285e-06      1.354e-03      2.617e-03
+   7   -242.5765568      3.795e-08      4.785e-04      1.114e-03
+   8   -242.5765079      2.016e-07      1.648e-04      2.938e-04
+   9   -242.5765544      1.915e-07      6.602e-05      4.616e-04
+  10   -242.5765065      1.973e-07      2.608e-05      2.947e-04
+  11   -242.5766032      3.988e-07      2.350e-05      5.576e-05
+-----------------------------------------------------------------
+SCF cycle converged
+
+Final energies (Ha)
+
+---------------------------------------------
+Kinetic energy                 :   245.1078
+    orbitals                   :   245.1078
+    unbound ideal approx.      :     0.0000
+Electron-nuclear energy        :  -585.7123
+Hartree energy                 :   118.9167
+Exchange-correlation energy    :   -17.9809
+    exchange                   :   -16.9756
+    correlation                :    -1.0053
+---------------------------------------------
+Total energy                   :  -239.6687
+---------------------------------------------
+Entropy                        :     7.9127
+    orbitals                   :     7.9127
+    unbound ideal approx.      :     0.0000
+---------------------------------------------
+Total free energy              :  -242.5766
+---------------------------------------------
+
+Chemical potential             :   0.219
+Mean ionization state          :   3.011
+
+Orbital eigenvalues (Ha) :
+
+     |   n=l+1 |       2 |       3 |       4 |       5
+-----+---------+---------+---------+---------+---------
+ l=0 | -54.623 |  -3.476 |   0.349 |   2.914 |   6.867
+   1 |  -2.102 |   0.693 |   3.182 |   6.941 |  11.898
+   2 |   1.113 |   3.238 |   6.497 |  10.927 |  16.509
+   3 |   2.168 |   5.108 |   9.102 |  14.206 |  20.431
+   4 |   3.255 |   6.876 |  11.539 |  17.285 |  24.135
+   5 |   4.447 |   8.711 |  14.005 |  20.369 |  27.825
+   6 |   5.759 |  10.653 |  16.561 |  23.529 |  31.581
+   7 |   7.195 |  12.719 |  19.232 |  26.797 |  35.437
+
+
+Orbital occupations (2l+1) * f\_\{nl\} :
+
+     |   n=l+1 |       2 |       3 |       4 |       5
+-----+---------+---------+---------+---------+---------
+ l=0 |   2.000 |   2.000 |   0.825 |   0.001 |   0.000
+   1 |   5.989 |   1.297 |   0.002 |   0.000 |   0.000
+   2 |   0.809 |   0.003 |   0.000 |   0.000 |   0.000
+   3 |   0.069 |   0.000 |   0.000 |   0.000 |   0.000
+   4 |   0.005 |   0.000 |   0.000 |   0.000 |   0.000
+   5 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
+   6 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
+   7 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
+
+
+func:'CalcEnergy' took: 15.7810 sec
+    \end{Verbatim}
+
     In the above, we clearly see that \texttt{lmax=10} is more than
 sufficient; in fact, it seems that \texttt{lmax=6} is enough in this
 case. Next, we shall test the convergence with respect to the number of
@@ -881,7 +1020,7 @@ run several calculations. If you are running this notebook, be patient
 as running all the calculations will take some time.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{9}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} set up the grid points to test over}
 \PY{n}{ngrid\PYZus{}test} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{500}\PY{p}{,} \PY{l+m+mi}{4500}\PY{p}{,} \PY{l+m+mi}{500}\PY{p}{)}
@@ -903,12 +1042,31 @@ as running all the calculations will take some time.
 \end{Verbatim}
 \end{tcolorbox}
 
+    \begin{Verbatim}[commandchars=\\\{\}]
+Running calculation for  500 grid pts
+func:'CalcEnergy' took: 5.1090 sec
+Running calculation for  1000 grid pts
+func:'CalcEnergy' took: 10.5763 sec
+Running calculation for  1500 grid pts
+func:'CalcEnergy' took: 23.3177 sec
+Running calculation for  2000 grid pts
+func:'CalcEnergy' took: 46.0826 sec
+Running calculation for  2500 grid pts
+func:'CalcEnergy' took: 110.5657 sec
+Running calculation for  3000 grid pts
+func:'CalcEnergy' took: 131.4919 sec
+Running calculation for  3500 grid pts
+func:'CalcEnergy' took: 232.4373 sec
+Running calculation for  4000 grid pts
+func:'CalcEnergy' took: 289.4703 sec
+    \end{Verbatim}
+
     We tabulate the total energy, core \(1s\) energy level and chemical
-potential \(mu\) below to check their convergence with respect to the
+potential \(\mu\) below to check their convergence with respect to the
 grid size.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{10}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} import package to make nice tables}
 \PY{k+kn}{import} \PY{n+nn}{tabulate}
@@ -927,6 +1085,19 @@ grid size.
 \PY{n+nb}{print}\PY{p}{(}\PY{n}{conv\PYZus{}tbl}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+   ngrid |    F tot |    e\_1s |      mu
+---------+----------+---------+---------
+     500 | -243.265 | -54.713 |   0.189
+    1000 | -242.577 | -54.624 |   0.219
+    1500 | -242.345 | -54.595 |   0.229
+    2000 | -242.229 | -54.580 |   0.235
+    2500 | -242.159 | -54.572 |   0.238
+    3000 | -242.113 | -54.566 |   0.240
+    3500 | -242.080 | -54.562 |   0.241
+    4000 | -242.055 | -54.559 |   0.242
+    \end{Verbatim}
 
     The degree of convergence required depends on various factors, such as
 the error that the user is willing to tolerate and the property that is
@@ -957,7 +1128,7 @@ because, under these conditions, the \(1s\) level is fully isolated from
 the neighbouring spheres and so is not part of an energy band.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{11}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} set up the nkpts array}
 \PY{n}{nkpts\PYZus{}arr} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{110}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}
@@ -980,8 +1151,31 @@ the neighbouring spheres and so is not part of an energy band.
 \end{Verbatim}
 \end{tcolorbox}
 
+    \begin{Verbatim}[commandchars=\\\{\}]
+Running calculation for  10 orbitals per band
+func:'CalcEnergy' took: 24.8916 sec
+Running calculation for  20 orbitals per band
+func:'CalcEnergy' took: 25.2325 sec
+Running calculation for  30 orbitals per band
+func:'CalcEnergy' took: 25.4720 sec
+Running calculation for  40 orbitals per band
+func:'CalcEnergy' took: 25.3509 sec
+Running calculation for  50 orbitals per band
+func:'CalcEnergy' took: 25.2889 sec
+Running calculation for  60 orbitals per band
+func:'CalcEnergy' took: 25.6647 sec
+Running calculation for  70 orbitals per band
+func:'CalcEnergy' took: 26.6996 sec
+Running calculation for  80 orbitals per band
+func:'CalcEnergy' took: 27.2449 sec
+Running calculation for  90 orbitals per band
+func:'CalcEnergy' took: 26.6155 sec
+Running calculation for  100 orbitals per band
+func:'CalcEnergy' took: 26.1183 sec
+    \end{Verbatim}
+
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{12}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} create table}
 \PY{n}{headers} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{nkpts}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{F tot}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{e\PYZus{}c}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
@@ -995,6 +1189,21 @@ the neighbouring spheres and so is not part of an energy band.
 \PY{n+nb}{print}\PY{p}{(}\PY{n}{conv\PYZus{}tbl}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+   nkpts |    F tot |     e\_c |      mu
+---------+----------+---------+---------
+      10 | -243.814 |  -0.131 |  -0.038
+      20 | -243.859 |  -0.130 |  -0.053
+      30 | -243.869 |  -0.130 |  -0.057
+      40 | -243.873 |  -0.130 |  -0.058
+      50 | -243.875 |  -0.130 |  -0.059
+      60 | -243.877 |  -0.130 |  -0.059
+      70 | -243.878 |  -0.130 |  -0.059
+      80 | -243.878 |  -0.130 |  -0.059
+      90 | -243.879 |  -0.130 |  -0.060
+     100 | -243.879 |  -0.130 |  -0.060
+    \end{Verbatim}
 
     We see from the above that, for this example, the quantities of interest
 are very well converged already with \texttt{nkpts=20}. However, the
@@ -1054,13 +1263,25 @@ point since there are no bands).
 As was seen in the earlier examples, the MIS calculate via the threshold
 method is printed by default at the end of every SCF run anyway. It is
 also a property of the \texttt{staticKS.Density} object so can be
-accessed through that if desired. For example, using the density of the
-existing output:
+accessed through that if desired. Let us again run a calculation for
+Aluminium at ambient conditions:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{7}{\boxspacing}
+\prompt{In}{incolor}{22}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} first set up and run a calculation}
+\PY{c+c1}{\PYZsh{} set up the ISModel}
+\PY{n}{Al\PYZus{}model} \PY{o}{=} \PY{n}{models}\PY{o}{.}\PY{n}{ISModel}\PY{p}{(}
+    \PY{n}{Al\PYZus{}atom}\PY{p}{,}
+    \PY{n}{bc}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dirichlet}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{unbound}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{quantum}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{xfunc\PYZus{}id}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{lda\PYZus{}x}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{cfunc\PYZus{}id}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{lda\PYZus{}c\PYZus{}pw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
+\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} reset the temperature}
+\PY{n}{Al\PYZus{}atom}\PY{o}{.}\PY{n}{temp} \PY{o}{=} \PY{l+m+mf}{0.01}
 
 \PY{c+c1}{\PYZsh{} set the values of nmax and lmax}
 \PY{n}{nmax} \PY{o}{=} \PY{l+m+mi}{5}
@@ -1068,79 +1289,25 @@ existing output:
 
 \PY{c+c1}{\PYZsh{} run the SCF calculation}
 \PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}
-    \PY{n}{nmax}\PY{p}{,} \PY{n}{lmax}\PY{p}{,} \PY{n}{scf\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mixfrac}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.6}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{maxscf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{50}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{grid\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ngrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{2000}\PY{p}{\PYZcb{}}
+    \PY{n}{nmax}\PY{p}{,}
+    \PY{n}{lmax}\PY{p}{,}
+    \PY{n}{scf\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mixfrac}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.6}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{maxscf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{50}\PY{p}{\PYZcb{}}\PY{p}{,}
+    \PY{n}{grid\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ngrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{2000}\PY{p}{\PYZcb{}}\PY{p}{,}
+    \PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
 \PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-Starting SCF energy calculation
+Warning: this input temperature is very low. Proceeding anyway, but results may
+not be accurate.
+Normal temperature range for atoMEC is 0.01 -- 100 eV
 
-iscf   E\_free (Ha)    dE (1.0e-05)   dn (1.0e-04)   dv (1.0e-04)
------------------------------------------------------------------
-   0   -210.1742176      1.000e+00      9.999e-01      1.000e+00
-   1   -221.6716261      5.187e-02      1.025e+00      7.388e-01
-   2   -234.9602943      5.656e-02      7.885e-01      4.043e-01
-   3   -240.1043827      2.142e-02      2.046e-01      6.814e-02
-   4   -240.2223529      4.911e-04      3.669e-02      1.591e-02
-   5   -240.2240213      6.945e-06      3.220e-03      6.192e-03
-   6   -240.2242092      7.821e-07      1.220e-03      2.565e-03
-   7   -240.2242934      3.505e-07      4.381e-04      9.761e-04
-   8   -240.2242345      2.452e-07      1.548e-04      5.180e-04
-   9   -240.2242347      1.176e-09      5.611e-05      2.181e-04
-  10   -240.2242491      5.990e-08      2.371e-05      1.273e-04
-  11   -240.2242348      5.976e-08      1.191e-05      1.630e-04
-  12   -240.2242348      2.855e-12      2.649e-06      6.672e-05
------------------------------------------------------------------
-SCF cycle converged
-
-Final energies (Ha)
-
----------------------------------------------
-Kinetic energy                 :   245.1184
-    orbitals                   :   245.1184
-    unbound ideal approx.      :     0.0000
-Electron-nuclear energy        :  -586.8083
-Hartree energy                 :   119.4855
-Exchange-correlation energy    :   -18.0172
-    exchange                   :   -17.0111
-    correlation                :    -1.0061
----------------------------------------------
-Total energy                   :  -240.2217
----------------------------------------------
-Entropy                        :     2.7034
-    orbitals                   :     2.7034
-    unbound ideal approx.      :     0.0000
----------------------------------------------
-Total free energy              :  -240.2242
----------------------------------------------
-
-Chemical potential             :   0.715
-Mean ionization state          :   3.000
-
-Orbital eigenvalues (Ha) :
-
-     |   n=l+1 |       2 |       3 |       4 |       5
------+---------+---------+---------+---------+---------
- l=0 | -54.508 |  -3.400 |   0.372 |   2.940 |   6.897
-   1 |  -2.026 |   0.717 |   3.210 |   6.972 |  11.930
-   2 |   1.132 |   3.266 |   6.530 |  10.962 |  16.544
-
-
-Orbital occupations (2l+1) * f\_\{nl\} :
-
-     |   n=l+1 |       2 |       3 |       4 |       5
------+---------+---------+---------+---------+---------
- l=0 |   2.000 |   2.000 |   2.000 |   0.000 |   0.000
-   1 |   6.000 |   1.000 |   0.000 |   0.000 |   0.000
-   2 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
-
-
-func:'CalcEnergy' took: 48.5132 sec
+func:'CalcEnergy' took: 20.9430 sec
     \end{Verbatim}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{8}{\boxspacing}
+\prompt{In}{incolor}{24}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} extract the MIS}
 \PY{n}{MIS} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{MIS}
@@ -1150,17 +1317,8 @@ func:'CalcEnergy' took: 48.5132 sec
 \end{Verbatim}
 \end{tcolorbox}
 
-    \begin{Verbatim}[commandchars=\\\{\}, frame=single, framerule=2mm, rulecolor=\color{outerrorbackground}]
-\textcolor{ansi-red}{---------------------------------------------------------------------------}
-\textcolor{ansi-red}{AttributeError}                            Traceback (most recent call last)
-\textcolor{ansi-green}{/tmp/ipykernel\_317721/1853468601.py} in \textcolor{ansi-cyan}{<module>}
-\textcolor{ansi-green-intense}{\textbf{      1}} \textcolor{ansi-red}{\# extract the MIS}
-\textcolor{ansi-green}{----> 2}\textcolor{ansi-red}{ }MIS \textcolor{ansi-blue}{=} output\textcolor{ansi-blue}{[}\textcolor{ansi-blue}{"density"}\textcolor{ansi-blue}{]}\textcolor{ansi-blue}{.}MIS
-\textcolor{ansi-green-intense}{\textbf{      3}} 
-\textcolor{ansi-green-intense}{\textbf{      4}} \textcolor{ansi-red}{\# print the 1st array element (only element in a spin unpolarized calculation)}
-\textcolor{ansi-green-intense}{\textbf{      5}} print\textcolor{ansi-blue}{(}\textcolor{ansi-blue}{"MIS = "}\textcolor{ansi-blue}{,} round\textcolor{ansi-blue}{(}MIS\textcolor{ansi-blue}{[}\textcolor{ansi-cyan}{0}\textcolor{ansi-blue}{]}\textcolor{ansi-blue}{,} \textcolor{ansi-cyan}{2}\textcolor{ansi-blue}{)}\textcolor{ansi-blue}{)}
-
-\textcolor{ansi-red}{AttributeError}: 'Density' object has no attribute 'MIS'
+    \begin{Verbatim}[commandchars=\\\{\}]
+MIS =  3.0
     \end{Verbatim}
 
     \hypertarget{calculation-of-mis-using-the-electron-localization-function}{%
@@ -1188,7 +1346,7 @@ In atoMEC the ELF is accessed through the
 and plot the ELF for our Aluminium example.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{9}{\boxspacing}
+\prompt{In}{incolor}{21}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} import localization module}
 \PY{k+kn}{from} \PY{n+nn}{atoMEC}\PY{n+nn}{.}\PY{n+nn}{postprocess} \PY{k+kn}{import} \PY{n}{localization}
@@ -1196,7 +1354,7 @@ and plot the ELF for our Aluminium example.
 \PY{c+c1}{\PYZsh{} Set up the ELF object}
 \PY{c+c1}{\PYZsh{} use the \PYZdq{}density\PYZdq{} version of the ELF (uses second order gradient expansion for KED)}
 
-\PY{n}{ELF\PYZus{}Al} \PY{o}{=} \PY{n}{localization}\PY{o}{.}\PY{n}{ELFTools}\PY{p}{(}\PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{method}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ELF\PYZus{}Al} \PY{o}{=} \PY{n}{localization}\PY{o}{.}\PY{n}{ELFTools}\PY{p}{(}\PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{method}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \PY{n}{xgrid} \PY{o}{=} \PY{n}{ELF\PYZus{}Al}\PY{o}{.}\PY{n}{\PYZus{}xgrid}
 \PY{n}{rgrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{xgrid}\PY{p}{)}
 
@@ -1227,7 +1385,7 @@ paper. In atoMEC, we can access this data from the \texttt{N\_shell}
 property of the \texttt{ELFTools} object:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{20}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} extract the number of electrons per shell}
 \PY{n}{N\PYZus{}s} \PY{o}{=} \PY{n}{ELF\PYZus{}Al}\PY{o}{.}\PY{n}{N\PYZus{}shell}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
@@ -1236,6 +1394,13 @@ property of the \texttt{ELFTools} object:
     \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The number of electrons in the n =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{shell =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n+nb}{round}\PY{p}{(}\PY{n}{N\PYZus{}s}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The number of electrons in the n = 1 shell = 2.13
+The number of electrons in the n = 2 shell = 7.77
+The number of electrons in the n = 3 shell = 0.04
+The number of electrons in the n = 4 shell = 3.0
+    \end{Verbatim}
 
     These numbers approximately match up to what we expect from ambient
 Aluminium: 2 electrons in the \(n=1\) shell, 8 in the \(n=2\) shell, and
