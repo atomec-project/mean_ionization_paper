@@ -386,16 +386,19 @@ background}\label{average-atom-models-theoretical-background}}
 In this section, we describe the average-atom model that we use and the
 equations that are solved. For a detailed derivation and discussion of
 the model, please see our earlier
-\href{https://arxiv.org/abs/2103.09928}{preprint}.
+\href{https://arxiv.org/abs/2103.09928}{preprint}. We shall first review
+the important aspects of this model; in the following sub-section, we
+explain in more detail the band-structure model of Massacrier \emph{et
+al} which we have also implemented in atoMEC.
 
-As discussed in the main test, we solve the spherically symmetric
+As discussed in the main text, we solve the spherically symmetric
 Kohn--Sham (KS) equations for an atom at finite temperature, with
 appropriate boundary conditions imposed on the orbitals intended to
 mimic the effect of interactions from electrons and nuclei in
 neighbouring atoms. The spherically symmetric KS equations are given by
 
 \begin{equation}
-\left[\frac{\textrm{d}^2}{\textrm{d}r} + \frac{2}{r}\frac{\textrm{d}}{\textrm{d}r} - \frac{l(l+1)}{r^2} \right] X_{\epsilon nl}(r) + 2 \left[\epsilon^{\tau}_{knl} - v_\textrm{s}[n](r) \right] X_{\epsilon nl}(r) = 0,
+\left[\frac{\textrm{d}^2}{\textrm{d}r} + \frac{2}{r}\frac{\textrm{d}}{\textrm{d}r} - \frac{l(l+1)}{r^2} \right] X_{nl}(r) + 2 \left[\epsilon^{\tau}_{knl} - v_\textrm{s}[n](r) \right] X_{nl}(r) = 0,
 \end{equation}
 
 where \(v_\textrm{s}[n](r)\) is the KS potential, given by
@@ -411,24 +414,14 @@ to the functional derivative of the xc free energy. As ever, due to the
 dependence of the KS potential on the density \(n(r)\), the KS equations
 must be solved iteratively until self-consistency is reached.
 
-One difference from the model presented in our earlier
-\href{https://arxiv.org/abs/2103.09928}{preprint} is that the orbitals
-now have an index \(\epsilon\), in addition to the \(n,l\) quantum
-numbers. This index is needed for the AA band-structure model, because
-it denotes the index of a given orbital within its energy band. If we do
-not employ the band-strucutre model, then this index is suppressed.
-
-In the general case, the density \(n(r)\) is constructed from the KS
-orbitals as
+The density \(n(r)\) is constructed from the orbitals as
 
 \begin{equation}
-    n(r) = 2\sum_{nl}(2l+1)
-    \int_{\epsilon_{nl}^-}^{\epsilon_{nl}^+} \textrm{d}{\epsilon} g_{nl}(\epsilon) f_{nl}(\epsilon,\mu,\tau) |X_{nl\epsilon}(r)|^2\,,
+n(r) = 2\sum_{nl}(2l+1) f_{nl}(\epsilon_{nl},\mu,\tau) |X_{nl}(r)|^2\,.
 \end{equation}
 
-where \(g_{nl}(\epsilon)\) is the density-of-states (DOS) and
-\(f_{nl}(\epsilon,\mu,\tau)\) the Fermi--Dirac (FD) distribution, given
-by
+where \(f_{nl}(\epsilon,\mu,\tau)\) the Fermi--Dirac (FD) distribution,
+given by
 
 \begin{equation}
 f_{nl}(\epsilon,\mu,\tau) = \frac{1}{1+e^{(\epsilon_{nl}-\mu)/\tau}}\,.
@@ -437,34 +430,10 @@ f_{nl}(\epsilon,\mu,\tau) = \frac{1}{1+e^{(\epsilon_{nl}-\mu)/\tau}}\,.
 The chemical potential \(\mu\) is determined by fixing the electron
 number \(N_\textrm{e}=4\pi\int\textrm{d}r r^2 n(r)\) to be equal to a
 pre-determined value (in this paper, \(N_\textrm{e}=Z\) in all cases).
-In practice, the integral in the density is expressed as a sum over
-discrete orbitals,
 
-\begin{equation}
- n(r) = 2\sum_{knl}(2l+1) w_{knl} g_{knl}(\epsilon_{knl},\epsilon_{nl}^\pm) f_{knl}(\epsilon_{knl},\mu,\tau) |X_{knl}(r)|^2\,,
-\end{equation}
-
-where \(w_{knl}\) is the integration weighting for the \(k\)-th index
-(with energy \(\epsilon_{knl}\)) of the \((n,l)\) energy band. We shall
-soon explain how the limits of the band energies \(\epsilon_{nl}^\pm\)
-are determined. When the band-structure model is not employed, the
-product \(w_{knl} g_{knl}(\epsilon_{knl}, \epsilon_{nl}^\pm)\equiv 1\)
-and hence the above expression simplifies to the more familiar
-expression for the density,
-
-\begin{equation}
-n(r) = 2\sum_{nl}(2l+1) f_{nl}(\epsilon_{nl},\mu,\tau) |X_{nl}(r)|^2\,.
-\end{equation}
-
-If the band-structure model is used, then the DOS function is given by
-
-\begin{gather}
-g_{knl}(\epsilon_{knl},\epsilon_{nl}^\pm) =\frac{2}{ \pi (\epsilon^+_{nl}-\epsilon_{nl}^-)^2} \sqrt{(\epsilon^+_{nl}-\epsilon_{knl})(\epsilon_{knl} - \epsilon^-_{nl})}\,.
-\end{gather}
-
-As discussed, we impose boundary conditions on the KS orbitals
-\(X_{nl}(r)\) which are intended to implicitly account for inter-atomic
-interactions. In our earlier
+As discussed in the main text, we impose boundary conditions on the KS
+orbitals \(X_{nl}(r)\) which are intended to implicitly account for
+inter-atomic interactions. In our earlier
 \href{https://arxiv.org/abs/2103.09928}{preprint}, we argued that a
 physically intuitive condition was to impose smoothness of the density
 at the edge of the WS cell,
@@ -485,6 +454,94 @@ which we refer to respectively as ``Dirichlet'' and ``Neumann''
 conditions. As discussed in the main text, the energy eigenvalues that
 result from these boundary conditions also define the upper and lower
 energy band limits \(\epsilon^{\pm}_{nl}\) for the band-structure model.
+We elaborate on this model in the following sub-section.
+
+\hypertarget{band-structure-aa-model}{%
+\subsection{Band-structure AA model}\label{band-structure-aa-model}}
+
+We here elaborate on the band-structure model proposed by Massacrier
+\emph{et al}, which we have implemented in atoMEC. In this model, the
+orbitals gain an extra index since we solve the KS equations for all
+energies in a given band. The KS equations thus become
+
+\begin{equation}
+\left[\frac{\textrm{d}^2}{\textrm{d}r} + \frac{2}{r}\frac{\textrm{d}}{\textrm{d}r} - \frac{l(l+1)}{r^2} \right] X_{\epsilon nl}(r) + 2 \left[\epsilon^{\tau}_{knl} - v_\textrm{s}[n](r) \right] X_{\epsilon nl}(r) = 0,
+\end{equation}
+
+and the density is given by
+
+\begin{equation}
+    n(r) = 2\sum_{nl}(2l+1)
+    \int_{\epsilon_{nl}^-}^{\epsilon_{nl}^+} \textrm{d}{\epsilon} g_{nl}(\epsilon) f_{nl}(\epsilon,\mu,\tau) |X_{nl\epsilon}(r)|^2\,,
+\end{equation}
+
+with the density-of-states (DOS) \(g_{nl}(\epsilon)\) given by the
+Hubbard DOS,
+
+\begin{gather}
+g_{nl}(\epsilon) =\frac{8}{ \pi \Delta_{nl}^2} \sqrt{(\epsilon^+_{nl}-\epsilon_{knl})(\epsilon_{knl} - \epsilon^-_{nl})}\,,\\
+\Delta_{nl} = \epsilon^+_{nl}-\epsilon_{nl}^- \,.
+\end{gather}
+
+In practise, the energy bands are of discretized, and the above integral
+becomes a summation over energies within each band which we now denote
+by index \(k\),
+
+\begin{gather}
+ n(r) = 2\sum_{knl}(2l+1) \delta\epsilon_{knl} g_{knl}(\epsilon_{knl},\epsilon_{nl}^\pm) f_{knl}(\epsilon_{knl},\mu,\tau) |X_{knl}(r)|^2\,,\\
+ g_{knl}(\epsilon_{knl},\epsilon_{nl}^\pm) =\frac{8}{ \pi \Delta_{nl}^2} \sqrt{(\epsilon^+_{nl}-\epsilon_{knl})(\epsilon_{knl} - \epsilon^-_{nl})}\,.
+\end{gather}
+
+We now simply the above expressions. To the best of our knowledge, this
+simplication was not discussed in the original paper. Firstly, we note
+that the energy spacing in the discretization of the energy band
+\(\delta\epsilon_{knl}\) can be written as
+
+\begin{equation}
+\delta\epsilon_{knl} = \frac{\epsilon^+_{nl} - \epsilon^-_{nl}}{N_k-1} = \frac{\Delta_{nl}}{N_k-1}\,,
+\end{equation}
+
+where \(N_k\) is the number of \(k\) points (the denominator is equal to
+\(N_k-1\) because there are \(N_k-1\) spacings for \(N_k\) total
+points). The product
+\(\delta\epsilon_{knl} \times g_{knl}(\epsilon_{knl},\epsilon_{nl}^\pm)\)
+therefore can be written as
+
+\begin{equation}
+\delta\epsilon_{knl} \times g_{knl}(\epsilon_{knl},\epsilon_{nl}^\pm) = \frac{8}{\pi\Delta_{nl}(N_k-1)} \sqrt{(\epsilon^+_{nl}-\epsilon_{knl})(\epsilon_{knl} - \epsilon^-_{nl})}\,.
+\end{equation}
+
+We then note that the energies in a band \(\epsilon_{knl}\) can be
+re-written as \begin{align}
+\epsilon_{knl} &= \epsilon_{nl}^- + \frac{k}{N_k-1}\Delta_{nl} \\
+               &= \epsilon_{nl}^+ + \frac{k-(N_k-1)}{N_k-1}\Delta_{nl}
+\end{align}
+
+Substituting the above expressions into the product
+\(\delta\epsilon_{knl} \times g_{knl}(\epsilon_{knl},\epsilon_{nl}^\pm)\)
+leads to the following expression:
+
+\begin{equation}
+\delta\epsilon_{knl} \times g_{knl}(\epsilon_{knl},\epsilon_{nl}^\pm) = \frac{8}{(N_k-1)^2}\sqrt{k(N_k-1-k)}\,.
+\end{equation}
+
+It is clear the above equation is in fact independent of the quantum
+numbers \(n\) and \(l\). The density \(n(r)\) can therefore be
+re-expressed as
+
+\begin{gather}
+n(r) = 2\sum_{k} w_k \sum_{nl}(2l+1) f_{knl}(\epsilon_{knl},\mu,\tau) |X_{knl}(r)|^2\,,\\
+w_k = \frac{8}{(N_k-1)^2}\sqrt{k(N_k-1-k)}\,.
+\end{gather}
+
+The above expression closely resembles the expression for the density in
+plane-wave DFT codes, since it has a summation over \(k\)-points and
+some weighting \(w_k\), very much like the \(\vec{k}\) point mesh for
+reciporacal space used in plane-wave DFT codes. It is also clear to see
+that when the concept of bands in the AA model is not employed
+(i.e.~when we use either the Dirichlet or Neumann conditions only), that
+\(N_k=1,w_k=1\) and the above expression reduces to the expression for
+the density in the previous sub-section.
 
     \hypertarget{introduction-to-atomec}{%
 \section{Introduction to atoMEC}\label{introduction-to-atomec}}
@@ -785,10 +842,10 @@ from this output:
 \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{rgrid}\PY{p}{,} \PY{n}{rgrid} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{2} \PY{o}{*} \PY{n}{dens\PYZus{}tot}\PY{p}{)}
 
 \PY{c+c1}{\PYZsh{} some formatting}
-\PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{ylim}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mf}{1.2}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}r}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{ (a\PYZus{}0)\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}r\PYZca{}2 n(r)}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{ (a\PYZus{}0)\PYZca{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZhy{}1\PYZcb{}\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylim}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mf}{1.2}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}r}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{ (a\PYZus{}0)\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}r\PYZca{}2 n(r)}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{ (a\PYZus{}0)\PYZca{}}\PY{l+s+s2}{\PYZob{}}\PY{l+s+s2}{\PYZhy{}1\PYZcb{}\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \PY{n}{plt}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{figures/density\PYZus{}example.pdf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
@@ -834,7 +891,7 @@ we shall increase the temperature (so more orbitals are required).
 \prompt{In}{incolor}{7}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} set the temperature to 10 eV}
-\PY{n}{Al\PYZus{}atom}\PY{o}{.}\PY{n}{units\PYZus{}temp}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{eV}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{Al\PYZus{}atom}\PY{o}{.}\PY{n}{units\PYZus{}temp} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{eV}\PY{l+s+s2}{\PYZdq{}}
 \PY{n}{Al\PYZus{}atom}\PY{o}{.}\PY{n}{temp} \PY{o}{=} \PY{l+m+mi}{10}
 
 \PY{c+c1}{\PYZsh{} run the calculation again}
@@ -927,8 +984,9 @@ cores.
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{8}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-\PY{c+c1}{\PYZsh{}enable parallelization}
+\PY{c+c1}{\PYZsh{} enable parallelization}
 \PY{k+kn}{from} \PY{n+nn}{atoMEC} \PY{k+kn}{import} \PY{n}{config}
+
 \PY{n}{config}\PY{o}{.}\PY{n}{numcores} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
 
 \PY{c+c1}{\PYZsh{} re\PYZhy{}run the calculation with larger lmax}
@@ -1034,11 +1092,13 @@ as running all the calculations will take some time.
 \PY{c+c1}{\PYZsh{} loop over the ngrid array}
 \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{ngrid} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{ngrid\PYZus{}test}\PY{p}{)}\PY{p}{:}
     \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Running calculation for }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ngrid}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{grid pts}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-    \PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}\PY{n}{nmax}\PY{p}{,} \PY{n}{lmax}\PY{p}{,} \PY{n}{grid\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ngrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{ngrid}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
-    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{ngrid}
-    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{energy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{F\PYZus{}tot}
-    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{eigvals}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
-    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]} \PY{o}{=} \PY{n}{config}\PY{o}{.}\PY{n}{mu}
+    \PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}
+        \PY{n}{nmax}\PY{p}{,} \PY{n}{lmax}\PY{p}{,} \PY{n}{grid\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ngrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{ngrid}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}
+    \PY{p}{)}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{ngrid}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{energy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{F\PYZus{}tot}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{eigvals}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]} \PY{o}{=} \PY{n}{config}\PY{o}{.}\PY{n}{mu}
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -1131,7 +1191,7 @@ the neighbouring spheres and so is not part of an energy band.
 \prompt{In}{incolor}{11}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} set up the nkpts array}
-\PY{n}{nkpts\PYZus{}arr} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{110}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{nkpts\PYZus{}arr} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{110}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}
 
 \PY{c+c1}{\PYZsh{} change the boundary condition}
 \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{bc} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bands}\PY{l+s+s2}{\PYZdq{}}
@@ -1143,11 +1203,17 @@ the neighbouring spheres and so is not part of an energy band.
 \PY{c+c1}{\PYZsh{} use a coarse value of ngrid since we are performing an independent kpt check}
 \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{nkpts} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{nkpts\PYZus{}arr}\PY{p}{)}\PY{p}{:}
     \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Running calculation for }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{nkpts}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals per band}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-    \PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}\PY{n}{nmax}\PY{p}{,} \PY{n}{lmax}\PY{p}{,} \PY{n}{grid\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ngrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{1000}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{band\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{nkpts}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{n}{nkpts}\PY{p}{\PYZcb{}}\PY{p}{)}
-    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{nkpts}
-    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{energy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{F\PYZus{}tot}
-    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{eigvals}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}
-    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]} \PY{o}{=} \PY{n}{config}\PY{o}{.}\PY{n}{mu}
+    \PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}
+        \PY{n}{nmax}\PY{p}{,}
+        \PY{n}{lmax}\PY{p}{,}
+        \PY{n}{grid\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ngrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{1000}\PY{p}{\PYZcb{}}\PY{p}{,}
+        \PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
+        \PY{n}{band\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{nkpts}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{nkpts}\PY{p}{\PYZcb{}}\PY{p}{,}
+    \PY{p}{)}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{n}{nkpts}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{energy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{F\PYZus{}tot}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{eigvals}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}
+    \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]} \PY{o}{=} \PY{n}{config}\PY{o}{.}\PY{n}{mu}
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -1346,7 +1412,7 @@ In atoMEC the ELF is accessed through the
 and plot the ELF for our Aluminium example.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{21}{\boxspacing}
+\prompt{In}{incolor}{26}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} import localization module}
 \PY{k+kn}{from} \PY{n+nn}{atoMEC}\PY{n+nn}{.}\PY{n+nn}{postprocess} \PY{k+kn}{import} \PY{n}{localization}
@@ -1354,7 +1420,7 @@ and plot the ELF for our Aluminium example.
 \PY{c+c1}{\PYZsh{} Set up the ELF object}
 \PY{c+c1}{\PYZsh{} use the \PYZdq{}density\PYZdq{} version of the ELF (uses second order gradient expansion for KED)}
 
-\PY{n}{ELF\PYZus{}Al} \PY{o}{=} \PY{n}{localization}\PY{o}{.}\PY{n}{ELFTools}\PY{p}{(}\PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{method}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{ELF\PYZus{}Al} \PY{o}{=} \PY{n}{localization}\PY{o}{.}\PY{n}{ELFTools}\PY{p}{(}\PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{method}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \PY{n}{xgrid} \PY{o}{=} \PY{n}{ELF\PYZus{}Al}\PY{o}{.}\PY{n}{\PYZus{}xgrid}
 \PY{n}{rgrid} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{xgrid}\PY{p}{)}
 
@@ -1364,12 +1430,11 @@ and plot the ELF for our Aluminium example.
 \PY{c+c1}{\PYZsh{} plot the ELF function}
 \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{rgrid}\PY{p}{,} \PY{n}{ELF\PYZus{}func}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
 
-\PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.01}\PY{p}{,}\PY{l+m+mf}{3.01}\PY{p}{)}
-\PY{n}{plt}\PY{o}{.}\PY{n}{ylim}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.01}\PY{p}{,}\PY{l+m+mf}{1.01}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.01}\PY{p}{,} \PY{l+m+mf}{3.01}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylim}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{0.01}\PY{p}{,} \PY{l+m+mf}{1.01}\PY{p}{)}
 \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}r}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{ (a\PYZus{}0)\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ELF\PYZdl{}(r)\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \PY{n}{plt}\PY{o}{.}\PY{n}{savefig}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{figures/ELF\PYZus{}example.pdf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-\PY{c+c1}{\PYZsh{}plt.show()}
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -1385,21 +1450,20 @@ paper. In atoMEC, we can access this data from the \texttt{N\_shell}
 property of the \texttt{ELFTools} object:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{20}{\boxspacing}
+\prompt{In}{incolor}{27}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} extract the number of electrons per shell}
 \PY{n}{N\PYZus{}s} \PY{o}{=} \PY{n}{ELF\PYZus{}Al}\PY{o}{.}\PY{n}{N\PYZus{}shell}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
 
 \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{N\PYZus{}s}\PY{p}{)}\PY{p}{)}\PY{p}{:}
-    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The number of electrons in the n =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{shell =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n+nb}{round}\PY{p}{(}\PY{n}{N\PYZus{}s}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The number of electrons in the n =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{shell =}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{N\PYZus{}s}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 The number of electrons in the n = 1 shell = 2.13
-The number of electrons in the n = 2 shell = 7.77
-The number of electrons in the n = 3 shell = 0.04
-The number of electrons in the n = 4 shell = 3.0
+The number of electrons in the n = 2 shell = 7.72
+The number of electrons in the n = 3 shell = 3.11
     \end{Verbatim}
 
     These numbers approximately match up to what we expect from ambient
