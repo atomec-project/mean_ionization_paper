@@ -479,7 +479,7 @@ with the density-of-states (DOS) \(g_{nl}(\epsilon)\) given by the
 Hubbard DOS,
 
 \begin{gather}
-g_{nl}(\epsilon) =\frac{8}{ \pi \Delta_{nl}^2} \sqrt{(\epsilon^+_{nl}-\epsilon_{knl})(\epsilon_{knl} - \epsilon^-_{nl})}\,,\\
+g_{nl}(\epsilon) =\frac{8}{ \pi \Delta_{nl}^2} \sqrt{(\epsilon^+_{nl}-\epsilon)(\epsilon - \epsilon^-_{nl})}\,,\\
 \Delta_{nl} = \epsilon^+_{nl}-\epsilon_{nl}^- \,.
 \end{gather}
 
@@ -492,9 +492,9 @@ by index \(k\),
  g_{knl}(\epsilon_{knl},\epsilon_{nl}^\pm) =\frac{8}{ \pi \Delta_{nl}^2} \sqrt{(\epsilon^+_{nl}-\epsilon_{knl})(\epsilon_{knl} - \epsilon^-_{nl})}\,.
 \end{gather}
 
-We now simply the above expressions. To the best of our knowledge, this
-simplication was not discussed in the original paper. Firstly, we note
-that the energy spacing in the discretization of the energy band
+We now simplify the above expressions. To the best of our knowledge,
+this simplification was not discussed in the original paper. Firstly, we
+note that the energy spacing in the discretization of the energy band
 \(\delta\epsilon_{knl}\) can be written as
 
 \begin{equation}
@@ -1477,6 +1477,101 @@ shall explain our choices in the results section.
     \hypertarget{calculation-of-the-mis-using-the-kubogreenwood-formula}{%
 \subsection{Calculation of the MIS using the Kubo--Greenwood
 formula}\label{calculation-of-the-mis-using-the-kubogreenwood-formula}}
+
+As seen in eq. (2) of the main text, the KG conductivity formula in a
+finite system is given by
+
+\begin{equation}
+\sigma_{S_1,S_2} (\omega)= \frac{2\pi}{3V\omega} \sum_{i\in S_1} \sum_{j\in S_2} (f_i - f_j) |\langle \phi_i | \nabla | \phi_j \rangle|^2 \delta (\epsilon_j - \epsilon_i - \omega)\,,
+\end{equation}
+
+for subsets \(\{S_1\},\{S_2\}\) of the orbitals. In the spherically
+symmetric case, this becomes
+
+\begin{equation}
+\sigma_{S_1,S_2}(\omega) = \frac{2\pi}{3V\omega} \sum_{nlm\in S_1} \sum_{n'l'm'\in S_2} (f_{nlm} - f_{n'l'm'}) |\langle \phi_{nlm} | \nabla | \phi_{n'l'm'} \rangle|^2 \delta (\epsilon_{n'l'm'} - \epsilon_{nlm} - \omega)\,.
+\end{equation}
+
+Note that, in the band-structure model, this becomes
+
+\begin{equation}
+\sigma_{S_1,S_2} (\omega) = \frac{2\pi}{3V\omega} \sum_k w_k \sum_{nlm\in S_1} \sum_{n'l'm'\in S_2} (f_{knlm} - f_{kn'l'm'}) |\langle \phi_{knlm} | \nabla | \phi_{kn'l'm'} \rangle|^2 \delta (\epsilon_{kn'l'm'} - \epsilon_{knlm} - \omega)\,,
+\end{equation}
+
+similar to the KG conductivity in plane-wave DFT codes. For simplicity,
+and because in the end we shall only the KG conductivity with the
+Dirichlet boundary condition, we shall present the equations without the
+\(k\)-index. Since the summation only involves orbitals with the same
+\(k\)-value, it is straightforward to re-introduce this at the end of
+the derivation.
+
+We focus first on the integral component of the equation for
+\(\sigma(\omega)\), which is given by
+
+\begin{align}
+|\langle \phi_{knlm} | \nabla | \phi_{kn'l'm'} \rangle|^2 &= \sum_{i=1}^3 \langle \phi_{knlm} | \nabla_i | \phi_{kn'l'm'} \rangle \langle \phi_{kn'l'm'} | \nabla_i | \phi_{knlm} \rangle \\
+&=3 \langle \phi_{knlm} | \nabla_z | \phi_{kn'l'm'} \rangle \langle \phi_{kn'l'm'} | \nabla_z | \phi_{knlm} \rangle\,,
+\end{align}
+
+where the second equation follows because the contribution from each
+cartesian component of the gradient is identical in spherically
+symmetric systems. We choose the \(z\) component because, in the
+traditional transformation between cartesian and spherical co-ordinates,
+this leads to a simpler set of equations. Let us now focus on the
+following term,
+
+\begin{align}
+\langle \phi_{kn'l'm'} | \nabla_z | \phi_{knlm} \rangle&= \nabla_{nn'll'mm'}^z \\
+&=R^{(d)}_{nn'll'} P^{(2)}_{lml'm'} \delta_{mm'} + R_{nn'll'} P^{(4)}_{lml'm'} \delta_{mm'},
+\end{align}
+
+which has been taken from this
+\href{https://www.sciencedirect.com/science/article/pii/S0010465517302539}{paper}.
+We do not derive the above expression, but instead direct readers to the
+aforementioned paper where it is derived in full. The terms in the above
+expression are given by
+
+\begin{align}
+R^{(d)}_{nn'll'} &= \int_0^{R_\textrm{VS}} \textrm{d}r r^2 X_{n'l'}(r) \frac{\textrm{d}X_{nl}(r)}{\textrm{d}r}\\
+ R_{nn'll'} &= \int_0^{R_\textrm{VS}} \textrm{d}r r X_{n'l'}(r) X_{nl}(r) \\
+ P^{(2)}_{lml'm'} &= 2\pi C_{lm}C_{l'm'} \int_{-1}^{1} \textrm{d}x x P_{l'}^{m'} (x) P_{l}^{m}(x) \\
+ P^{(4)}_{lml'm'} &= -2\pi C_{lm}C_{l'm'} \int_{-1}^{1} \textrm{d}x (1-x^2) P_{l'}^{m'} (x) \frac{\textrm{d}P_l^m(x)}{\textrm{d}x}\\
+ C_{lm} &= \sqrt{\frac{2l+1}{4\pi}}\sqrt{\frac{(l-|m|)!}{(l+|m|)!)}}\,,
+\end{align}
+
+where \(P_l^m(x)\) are the Legendre polynomials. Returning to the
+expression for \(\sigma(\omega)\), we now have
+
+\begin{equation}
+\sigma_{S_1,S_2}(\omega) = \frac{2\pi}{V\omega} \sum_{nl\in S_1} \sum_{n'l'\in S_2} \sum_{m\in \{S1,S2\}} (f_{nl} - f_{n'l'}) |\nabla_{nn'll'm}^z|^2 \delta (\epsilon_{n'l'} - \epsilon_{nl} - \omega) \delta(l\pm 1 - l')\,.
+\end{equation}
+
+In the above, the double summation over \(m\) has been reduced to a
+single summation because of the presence of the the \(\delta_{mm'}\) in
+\(\nabla_{nn'll'mm'}^z\). Additionally, the \(\delta(l\pm 1 - l')\)
+comes from sum rules in the evaluation of the \(P^{(2,4)}\) integrals.
+
+Now, noting the relationship between the conductivity and the number of
+electrons \(Z_{S1,S2}\) which contribute to that part of the
+conductivity,
+
+\begin{equation}
+Z_{S1,S2} = \frac{2V}{\pi} \int_0^\infty \textrm{d}\omega \sigma_{S1,S2}(\omega)\,, 
+\end{equation}
+
+we substitute our AA conductivity formula into the above expression to
+obtain
+
+\begin{equation}
+Z_{S1,S2} = 4 \sum_{nl\in S_1} \sum_{n'l'\in S_2} \sum_{m\in \{S1,S2\}} \frac{f_{nl} - f_{n'l'}}{\epsilon_{n'l'}-\epsilon_{nl}}|\nabla_{nn'll'm}^z|^2 \delta(l\pm 1 - l') \Theta (\epsilon_{n'l'}-\epsilon_{nl})
+\end{equation}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
 
 
     % Add a bibliography block to the postdoc
