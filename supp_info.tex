@@ -1695,42 +1695,30 @@ range of densities.
 
 \PY{c+c1}{\PYZsh{} ensure parallelism is on}
 \PY{n}{config}\PY{o}{.}\PY{n}{numcores} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
-
 \PY{c+c1}{\PYZsh{} set up the base Carbon atom}
 \PY{n}{C\PYZus{}atom} \PY{o}{=} \PY{n}{Atom}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{l+m+mf}{1.0}\PY{p}{,} \PY{n}{units\PYZus{}temp}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{eV}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
-
 \PY{c+c1}{\PYZsh{} set up the base model}
 \PY{n}{model} \PY{o}{=} \PY{n}{models}\PY{o}{.}\PY{n}{ISModel}\PY{p}{(}\PY{n}{C\PYZus{}atom}\PY{p}{,} \PY{n}{unbound}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{quantum}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
-
 \PY{c+c1}{\PYZsh{} define the boundary conditions}
 \PY{n}{bcs} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dirichlet}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{neumann}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bands}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
-
 \PY{c+c1}{\PYZsh{} define the densities}
 \PY{n}{densities} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{,} \PY{l+m+mi}{50}\PY{p}{,} \PY{l+m+mi}{80}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{,} \PY{l+m+mi}{150}\PY{p}{,} \PY{l+m+mi}{200}\PY{p}{,} \PY{l+m+mi}{300}\PY{p}{,} \PY{l+m+mi}{400}\PY{p}{]}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{float}\PY{p}{)}
-
 \PY{c+c1}{\PYZsh{} set the lmax parameter (same for all bcs)}
 \PY{n}{lmax} \PY{o}{=} \PY{l+m+mi}{20}
-
 \PY{c+c1}{\PYZsh{} grid parameters}
 \PY{n}{grid\PYZus{}params} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ngrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{1000}\PY{p}{\PYZcb{}}
-
 \PY{c+c1}{\PYZsh{} band\PYZus{}parameters}
 \PY{n}{band\PYZus{}params} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{nkpts}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{100}\PY{p}{\PYZcb{}}
-
 \PY{c+c1}{\PYZsh{} base directory}
 \PY{n}{basedir} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/home/callow46/mean\PYZus{}ionization\PYZus{}paper}\PY{l+s+s2}{\PYZdq{}}
 
 \PY{k}{if} \PY{n}{run\PYZus{}SCF\PYZus{}calcs}\PY{p}{:}
-
     \PY{c+c1}{\PYZsh{} loop over boundary conditions}
     \PY{k}{for} \PY{n}{bc} \PY{o+ow}{in} \PY{n}{bcs}\PY{p}{:}
-
         \PY{c+c1}{\PYZsh{} change into the bc directory}
         \PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{n}{basedir} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/results/Carbon/}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{bc} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-
         \PY{c+c1}{\PYZsh{} set the boundary condition}
         \PY{n}{model}\PY{o}{.}\PY{n}{bc} \PY{o}{=} \PY{n}{bc}
-
         \PY{c+c1}{\PYZsh{} dirichlet needs more eigenvalues since empty states required for Kubo\PYZhy{}Greenwood}
         \PY{k}{if} \PY{n}{bc} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dirichlet}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
             \PY{n}{nmax} \PY{o}{=} \PY{l+m+mi}{30}
@@ -1740,16 +1728,12 @@ range of densities.
             \PY{n}{nkpts} \PY{o}{=} \PY{l+m+mi}{100}
         \PY{k}{else}\PY{p}{:}
             \PY{n}{nkpts} \PY{o}{=} \PY{l+m+mi}{1}
-
         \PY{c+c1}{\PYZsh{} loop over the densities}
-        \PY{k}{for} \PY{n}{density} \PY{o+ow}{in} \PY{n}{densities}\PY{p}{:}
-            
+        \PY{k}{for} \PY{n}{density} \PY{o+ow}{in} \PY{n}{densities}\PY{p}{:}           
             \PY{c+c1}{\PYZsh{} set the output to an external file}
             \PY{n}{sys}\PY{o}{.}\PY{n}{stdout} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C\PYZus{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{density}\PY{p}{)}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.log}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{w}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-
             \PY{c+c1}{\PYZsh{} set the density}
             \PY{n}{C\PYZus{}atom}\PY{o}{.}\PY{n}{density} \PY{o}{=} \PY{n}{density}
-
             \PY{c+c1}{\PYZsh{} run the SCF calculation}
             \PY{n}{output} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}
                 \PY{n}{nmax}\PY{p}{,}
@@ -1758,14 +1742,11 @@ range of densities.
                 \PY{n}{band\PYZus{}params}\PY{o}{=}\PY{n}{band\PYZus{}params}\PY{p}{,}
                 \PY{n}{dos\PYZus{}file}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dos\PYZus{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{density}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
             \PY{p}{)}
-
             \PY{c+c1}{\PYZsh{} save the orbitals and density output}
             \PY{n}{orbfile} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C\PYZus{}orbs\PYZus{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{density}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.pkl}\PY{l+s+s2}{\PYZdq{}}
             \PY{n}{densfile} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C\PYZus{}dens\PYZus{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{density}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.pkl}\PY{l+s+s2}{\PYZdq{}}
-
             \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{n}{orbfile}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{wb}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
                 \PY{n}{pkl}\PY{o}{.}\PY{n}{dump}\PY{p}{(}\PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{f}\PY{p}{,} \PY{n}{protocol}\PY{o}{=}\PY{n}{pkl}\PY{o}{.}\PY{n}{HIGHEST\PYZus{}PROTOCOL}\PY{p}{)}
-
             \PY{k}{with} \PY{n+nb}{open}\PY{p}{(}\PY{n}{densfile}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{wb}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} \PY{k}{as} \PY{n}{f}\PY{p}{:}
                 \PY{n}{pkl}\PY{o}{.}\PY{n}{dump}\PY{p}{(}\PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{f}\PY{p}{,} \PY{n}{protocol}\PY{o}{=}\PY{n}{pkl}\PY{o}{.}\PY{n}{HIGHEST\PYZus{}PROTOCOL}\PY{p}{)}
 
@@ -1787,33 +1768,22 @@ temperatures.
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} set up the base Beryllium atom}
 \PY{n}{Be\PYZus{}atom} \PY{o}{=} \PY{n}{Atom}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Be}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{l+m+mf}{1.85}\PY{p}{,} \PY{n}{units\PYZus{}temp}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{eV}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
-
 \PY{c+c1}{\PYZsh{} set up the base model}
 \PY{n}{model} \PY{o}{=} \PY{n}{models}\PY{o}{.}\PY{n}{ISModel}\PY{p}{(}\PY{n}{Be\PYZus{}atom}\PY{p}{,} \PY{n}{unbound}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{quantum}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
-
-\PY{c+c1}{\PYZsh{} define the boundary conditions}
-\PY{n}{bcs} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dirichlet}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{neumann}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bands}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
-
 \PY{c+c1}{\PYZsh{} define the temperatures}
 \PY{n}{temps} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{86}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{n}{dtype}\PY{o}{=}\PY{n+nb}{float}\PY{p}{)}
-
 \PY{c+c1}{\PYZsh{} set the lmax parameter (same for all bcs)}
 \PY{n}{lmax} \PY{o}{=} \PY{l+m+mi}{15}
-
 \PY{c+c1}{\PYZsh{} grid parameters}
 \PY{n}{grid\PYZus{}params} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ngrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{1000}\PY{p}{\PYZcb{}}
 
 \PY{k}{if} \PY{n}{run\PYZus{}SCF\PYZus{}calcs}\PY{p}{:}
-
     \PY{c+c1}{\PYZsh{} loop over boundary conditions}
     \PY{k}{for} \PY{n}{bc} \PY{o+ow}{in} \PY{n}{bcs}\PY{p}{:}
-
         \PY{c+c1}{\PYZsh{} change into the bc directory}
         \PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{n}{basedir} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/results/Beryllium/}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{bc} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-
         \PY{c+c1}{\PYZsh{} set the boundary condition}
         \PY{n}{model}\PY{o}{.}\PY{n}{bc} \PY{o}{=} \PY{n}{bc}
-
         \PY{c+c1}{\PYZsh{} dirichlet needs more eigenvalues since empty states required for Kubo\PYZhy{}Greenwood}
         \PY{k}{if} \PY{n}{bc} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dirichlet}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
             \PY{n}{nmax} \PY{o}{=} \PY{l+m+mi}{30}
@@ -1823,16 +1793,12 @@ temperatures.
             \PY{n}{nkpts} \PY{o}{=} \PY{l+m+mi}{50}
         \PY{k}{else}\PY{p}{:}
             \PY{n}{nkpts} \PY{o}{=} \PY{l+m+mi}{1}
-
         \PY{c+c1}{\PYZsh{} loop over the densities}
-        \PY{k}{for} \PY{n}{temp} \PY{o+ow}{in} \PY{n}{temps}\PY{p}{:}
-            
+        \PY{k}{for} \PY{n}{temp} \PY{o+ow}{in} \PY{n}{temps}\PY{p}{:}          
             \PY{c+c1}{\PYZsh{} set the output to an external file}
             \PY{n}{sys}\PY{o}{.}\PY{n}{stdout} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Be\PYZus{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{temp}\PY{p}{)}\PY{o}{+}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.log}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{w}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-
             \PY{c+c1}{\PYZsh{} set the density}
             \PY{n}{Be\PYZus{}atom}\PY{o}{.}\PY{n}{temp} \PY{o}{=} \PY{n}{temp}
-
             \PY{c+c1}{\PYZsh{} run the SCF calculation}
             \PY{n}{output} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}
                 \PY{n}{nmax}\PY{p}{,}
