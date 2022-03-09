@@ -14,15 +14,14 @@
     % Basic figure setup, for now with no caption control since it's done
     % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
     \usepackage{graphicx}
-    \usepackage{natbib}
+\usepackage[square,numbers]{natbib} 
+\bibliographystyle{unsrtnat} 
     % Maintain compatibility with old templates. Remove in nbconvert 6.0
     \let\Oldincludegraphics\includegraphics
     % Ensure that by default, figures have no caption (until we provide a
     % proper Figure object with a Caption API and a way to capture that
     % in the conversion process - todo).
     \usepackage{caption}
-    \DeclareCaptionFormat{nocaption}{}
-    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
 
     \usepackage{float}
     \floatplacement{figure}{H} % forces figures to be placed at the correct location
@@ -142,8 +141,7 @@
     \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
     \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
     \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
-    \newcommand{\onlinecite}[1]{\hspace{-1 ex} \nocite{#1}\citenum{#1}}
-    
+\newcommand{\onlinecite}[1]{\hspace{-1 ex} \nocite{#1}\citenum{#1}}    
     
     % Define a nice break command that doesn't care if a line doesn't already
     % exist.
@@ -157,7 +155,8 @@
     \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
     % Document parameters
     % Document title
-\title{Supplementary Information} 
+\title{Accurate and efficient computation of mean ionization states with an average-atom Kubo--Greenwood approach: Supplementary material} 
+\author{Timothy J. Callow, Eli Kraisler, Attila Cangi}
     
     
     
@@ -753,6 +752,7 @@ from this output:
 
     \begin{center}
 \begin{figure} 
+\centering 
 \includegraphics{figures/density_example.pdf} 
 \label{Al:dens_example} 
 \caption{Radial density distribution for Aluminium} 
@@ -1105,7 +1105,7 @@ First, we calculate the DOS for Carbon under these conditions:
     Next, we plot the DOS:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{31}{\boxspacing}
+\prompt{In}{incolor}{54}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k+kn}{import} \PY{n+nn}{MIS\PYZus{}plots}
 \PY{n}{MIS\PYZus{}plots}\PY{o}{.}\PY{n}{plot\PYZus{}DOS}\PY{p}{(}\PY{n}{densities}\PY{p}{,} \PY{n}{chem\PYZus{}pots}\PY{p}{)}
@@ -1114,6 +1114,7 @@ First, we calculate the DOS for Carbon under these conditions:
 
     \begin{center}
 \begin{figure} 
+\centering 
 \includegraphics{figures/Carbon_DOS_comp.pdf} 
 \label{C:dos_example} 
 \caption{Radial density distribution for Aluminium} 
@@ -1281,6 +1282,7 @@ and plot the ELF for our Aluminium example.
 
     \begin{center}
 \begin{figure} 
+\centering 
 \includegraphics{figures/ELF_example.pdf} 
 \label{Al:ELF_example} 
 \caption{Radial density distribution for Aluminium} 
@@ -1784,8 +1786,7 @@ orbitals.
 \end{tcolorbox}
 
 
-\bibliographystyle{unsrt} 
- \bibliography{main}    
+\bibliography{main}    
     
     
 \end{document}
