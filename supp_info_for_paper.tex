@@ -1,4 +1,4 @@
-\documentclass[9pt]{article}
+\documentclass[preprint,aps]{revtex4-2}
 
     \usepackage[breakable]{tcolorbox}
     \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
@@ -155,7 +155,7 @@
     \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
     % Document parameters
     % Document title
-\title{Supplementary Information}
+\title{Supplementary Information} 
     
     
     
@@ -750,8 +750,11 @@ from this output:
 \end{tcolorbox}
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{supp_info_files/supp_info_9_0.png}
-    \end{center}
+\begin{figure} 
+\includegraphics{figures/density_example.pdf} 
+\label{Al:dens_example} 
+\caption{Radial density distribution for Aluminium} 
+\end{figure}    \end{center}
     { \hspace*{\fill} \\}
     
     \hypertarget{convergence-testing}{%
@@ -1108,8 +1111,11 @@ First, we calculate the DOS for Carbon under these conditions:
 \end{tcolorbox}
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{supp_info_files/supp_info_25_0.png}
-    \end{center}
+\begin{figure} 
+\includegraphics{figures/Carbon_DOS_comp.pdf} 
+\label{C:dos_example} 
+\caption{Radial density distribution for Aluminium} 
+\end{figure}    \end{center}
     { \hspace*{\fill} \\}
     
     Note that, for the densities between \(20-80\ \textrm{g cm}^{-3}\), we
@@ -1272,8 +1278,11 @@ and plot the ELF for our Aluminium example.
 \end{tcolorbox}
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{supp_info_files/supp_info_31_0.png}
-    \end{center}
+\begin{figure} 
+\includegraphics{figures/ELF_example.pdf} 
+\label{Al:ELF_example} 
+\caption{Radial density distribution for Aluminium} 
+\end{figure}    \end{center}
     { \hspace*{\fill} \\}
     
     The next stage is to use the ELF to compute the number of electrons in a
@@ -1772,8 +1781,9 @@ orbitals.
 \end{Verbatim}
 \end{tcolorbox}
 
-\bibliographystyle{unsrt}
-\bibliography{main}    
+
+\bibliographystyle{unsrt} 
+ \bibliography{main}    
     
     
 \end{document}
