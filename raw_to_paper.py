@@ -23,5 +23,8 @@ with open("supp_info_for_paper.tex", "w") as f:
             linenew = "\\renewcommand{\\Verbatim}[1][1]{\\small %}" + "\n"
             print(line)
             f.write(line)
+        elif "Add a bibliography block to the postdoc" in line:
+            linenew = "\\bibliography{main}"
+            f.write(linenew)
         else:
             f.write(line)
