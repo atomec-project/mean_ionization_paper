@@ -155,7 +155,7 @@
     \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
     % Document parameters
     % Document title
-\title{Accurate and efficient computation of mean ionization states with an average-atom Kubo--Greenwood approach: Supplementary material} 
+\title{Accurate and efficient computation of mean ionization states with an average-atom Kubo--Greenwood approach: Supplementary Material} 
 \author{Timothy J. Callow, Eli Kraisler, Attila Cangi}
     
     
@@ -577,11 +577,17 @@ mass density. We start with Aluminium at room temperature:
 \PY{k+kn}{import} \PY{n+nn}{os}
 \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
 \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{MIS\PYZus{}plots}
+
+\PY{c+c1}{\PYZsh{} set the default printing output}
+\PY{n}{default\PYZus{}stdout} \PY{o}{=} \PY{n}{sys}\PY{o}{.}\PY{n}{stdout}
+\PY{c+c1}{\PYZsh{} base directory:}
+\PY{n}{basedir} \PY{o}{=} \PY{n}{os}\PY{o}{.}\PY{n}{getcwd}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{37}{\boxspacing}
+\prompt{In}{incolor}{2}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} import the Atom object}
 \PY{k+kn}{from} \PY{n+nn}{atoMEC} \PY{k+kn}{import} \PY{n}{Atom}
@@ -590,6 +596,29 @@ mass density. We start with Aluminium at room temperature:
 \PY{n}{Al\PYZus{}atom} \PY{o}{=} \PY{n}{Atom}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Al}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+m+mi}{300}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{l+m+mf}{2.7}\PY{p}{,} \PY{n}{units\PYZus{}temp}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{K}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Welcome to atoMEC!
+
+Warning: this input temperature is very low. Proceeding anyway, but results may
+not be accurate.
+Normal temperature range for atoMEC is 0.01 -- 100 eV
+
+Atomic information:
+
+Atomic species                : Al
+Atomic charge / weight        : 13  / 26.982
+Valence electrons             : 3
+Mass density                  : 2.7 g cm\^{}-3
+Voronoi sphere radius         : 2.997 Bohr / 1.586 Angstrom
+Electronic temperature        : 0.00095 Ha /  0.02585 eV / 300 K
+Wigner-Seitz radius           : 2.078 (Bohr)
+Ionic coupling parameter      : 2.967e+04
+Electron degeneracy parameter : 0.002228
+
+
+    \end{Verbatim}
 
     We see this prints some key information about our system, including for
 example the ionic coupling and electron degeneracy parameters, which are
@@ -602,7 +631,7 @@ which approximations we use in our model, for example the boundary
 condition and exchange-correlation (XC) approximation.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{38}{\boxspacing}
+\prompt{In}{incolor}{3}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} import models}
 \PY{k+kn}{from} \PY{n+nn}{atoMEC} \PY{k+kn}{import} \PY{n}{models}
@@ -613,6 +642,21 @@ condition and exchange-correlation (XC) approximation.
 \PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Using Ion-Sphere model
+Ion-sphere model parameters:
+
+Spin-polarized                : False
+Number of electrons           : 13
+Exchange functional           : lda\_x
+Correlation functional        : lda\_c\_pw
+Boundary condition            : dirichlet
+Unbound electron treatment    : quantum
+Shift KS potential            : True
+
+
+    \end{Verbatim}
 
     In the above, we have set up an ion-sphere model (\texttt{ISModel})
 which so far is the only kind of AA model implemented in atoMEC.
@@ -645,7 +689,7 @@ room temperature we do not need to include lots of states so we set
 \texttt{nmax=5}, \texttt{lmax=3}.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{39}{\boxspacing}
+\prompt{In}{incolor}{4}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} set the values of nmax and lmax}
 \PY{n}{nmax} \PY{o}{=} \PY{l+m+mi}{5}
@@ -655,6 +699,75 @@ room temperature we do not need to include lots of states so we set
 \PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}\PY{n}{nmax}\PY{p}{,} \PY{n}{lmax}\PY{p}{,} \PY{n}{scf\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mixfrac}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{0.6}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{maxscf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{50}\PY{p}{\PYZcb{}}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Starting SCF energy calculation
+
+iscf   E\_free (Ha)    dE (1.0e-05)   dn (1.0e-04)   dv (1.0e-04)
+-----------------------------------------------------------------
+   0   -210.9503289      1.000e+00      9.999e-01      1.000e+00
+   1   -222.7062710      5.279e-02      1.006e+00      7.357e-01
+   2   -235.5939281      5.470e-02      7.726e-01      3.973e-01
+   3   -240.4608125      2.024e-02      1.988e-01      6.811e-02
+   4   -240.5743831      4.721e-04      3.588e-02      1.554e-02
+   5   -240.5758261      5.998e-06      3.137e-03      6.085e-03
+   6   -240.5760477      9.209e-07      1.177e-03      2.093e-03
+   7   -240.5759785      2.877e-07      4.315e-04      1.424e-03
+   8   -240.5759149      2.642e-07      1.589e-04      4.043e-04
+   9   -240.5759773      2.591e-07      5.434e-05      4.030e-04
+  10   -240.5762078      9.581e-07      2.391e-05      5.248e-04
+  11   -240.5759770      9.593e-07      1.686e-05      4.910e-04
+  12   -240.5760313      2.257e-07      8.626e-06      4.579e-04
+  13   -240.5759432      3.663e-07      8.147e-06      3.143e-04
+  14   -240.5760022      2.453e-07      5.269e-06      2.410e-04
+  15   -240.5760397      1.558e-07      4.717e-06      9.087e-05
+-----------------------------------------------------------------
+SCF cycle converged
+
+Final energies (Ha)
+
+---------------------------------------------
+Kinetic energy                 :   245.4007
+    orbitals                   :   245.4007
+    unbound ideal approx.      :     0.0000
+Electron-nuclear energy        :  -587.2873
+Hartree energy                 :   119.3529
+Exchange-correlation energy    :   -18.0414
+    exchange                   :   -17.0347
+    correlation                :    -1.0067
+---------------------------------------------
+Total energy                   :  -240.5751
+---------------------------------------------
+Entropy                        :     2.7034
+    orbitals                   :     2.7034
+    unbound ideal approx.      :     0.0000
+---------------------------------------------
+Total free energy              :  -240.5777
+---------------------------------------------
+
+Chemical potential             :   0.699
+Mean ionization state          :   3.000
+
+Orbital eigenvalues (Ha) :
+
+     |   n=l+1 |       2 |       3 |       4 |       5
+-----+---------+---------+---------+---------+---------
+ l=0 | -54.552 |  -3.446 |   0.356 |   2.925 |   6.879
+   1 |  -2.070 |   0.700 |   3.194 |   6.954 |  11.912
+   2 |   1.118 |   3.249 |   6.508 |  10.939 |  16.522
+
+
+Orbital occupations (2l+1) * f\_\{nl\} :
+
+     |   n=l+1 |       2 |       3 |       4 |       5
+-----+---------+---------+---------+---------+---------
+ l=0 |   2.000 |   2.000 |   2.000 |   0.000 |   0.000
+   1 |   6.000 |   1.000 |   0.000 |   0.000 |   0.000
+   2 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
+
+
+func:'CalcEnergy' took: 28.7580 sec
+    \end{Verbatim}
 
     In the above, at each step of the SCF (self-consistent field) cycle, the
 spherically symmetric KS equations are solved for the chosen boundary
@@ -724,7 +837,7 @@ potential and orbtials. For example, we can extract and plot the density
 from this output:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{43}{\boxspacing}
+\prompt{In}{incolor}{5}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} extract the density object}
 \PY{n}{dens\PYZus{}Al} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
@@ -755,7 +868,7 @@ from this output:
 \centering 
 \includegraphics{figures/density_example.pdf} 
 \label{Al:dens_example} 
-\caption{Radial density distribution for Aluminium} 
+\caption{Radial density distribution $r^2 n(r)$ for Aluminium at                     its solid density $\rho_\textrm{m}=2.7\ \textrm{g cm}^{-3}$ and                     temperature $T = 0.01\ \textrm{eV}$, for the Dirichlet                     boundary condition.} 
 \end{figure}    \end{center}
     { \hspace*{\fill} \\}
     
@@ -792,7 +905,7 @@ occoupations. Let us consider our Aluminium atom from earlier, but now
 we shall increase the temperature (so more orbitals are required).
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{6}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} set the temperature to 10 eV}
 \PY{n}{Al\PYZus{}atom}\PY{o}{.}\PY{n}{units\PYZus{}temp} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{eV}\PY{l+s+s2}{\PYZdq{}}
@@ -802,6 +915,70 @@ we shall increase the temperature (so more orbitals are required).
 \PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}\PY{n}{nmax}\PY{p}{,} \PY{n}{lmax}\PY{p}{,} \PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Starting SCF energy calculation
+
+iscf   E\_free (Ha)    dE (1.0e-05)   dn (1.0e-04)   dv (1.0e-04)
+-----------------------------------------------------------------
+   0   -214.2613678      1.000e+00      9.999e-01      1.000e+00
+   1   -224.1287430      4.403e-02      1.020e+00      7.395e-01
+   2   -237.0838124      5.464e-02      8.010e-01      4.294e-01
+   3   -242.4343199      2.207e-02      2.026e-01      6.883e-02
+   4   -242.5475915      4.670e-04      3.594e-02      1.508e-02
+   5   -242.5491121      6.269e-06      3.520e-03      6.318e-03
+   6   -242.5492575      5.992e-07      1.319e-03      2.665e-03
+   7   -242.5492674      4.081e-08      4.664e-04      1.134e-03
+   8   -242.5492662      4.693e-09      1.654e-04      4.839e-04
+   9   -242.5492654      3.390e-09      5.894e-05      2.061e-04
+  10   -242.5492651      1.177e-09      2.111e-05      8.756e-05
+-----------------------------------------------------------------
+SCF cycle converged
+
+Final energies (Ha)
+
+---------------------------------------------
+Kinetic energy                 :   245.0512
+    orbitals                   :   245.0512
+    unbound ideal approx.      :     0.0000
+Electron-nuclear energy        :  -585.8430
+Hartree energy                 :   119.0002
+Exchange-correlation energy    :   -17.9878
+    exchange                   :   -16.9823
+    correlation                :    -1.0056
+---------------------------------------------
+Total energy                   :  -239.7795
+---------------------------------------------
+Entropy                        :     7.5369
+    orbitals                   :     7.5369
+    unbound ideal approx.      :     0.0000
+---------------------------------------------
+Total free energy              :  -242.5493
+---------------------------------------------
+
+Chemical potential             :   0.233
+Mean ionization state          :   3.011
+
+Orbital eigenvalues (Ha) :
+
+     |   n=l+1 |       2 |       3 |       4 |       5
+-----+---------+---------+---------+---------+---------
+ l=0 | -54.614 |  -3.469 |   0.351 |   2.916 |   6.870
+   1 |  -2.095 |   0.695 |   3.185 |   6.944 |  11.902
+   2 |   1.115 |   3.241 |   6.500 |  10.930 |  16.512
+
+
+Orbital occupations (2l+1) * f\_\{nl\} :
+
+     |   n=l+1 |       2 |       3 |       4 |       5
+-----+---------+---------+---------+---------+---------
+ l=0 |   2.000 |   2.000 |   0.841 |   0.001 |   0.000
+   1 |   5.989 |   1.330 |   0.002 |   0.000 |   0.000
+   2 |   0.834 |   0.003 |   0.000 |   0.000 |   0.000
+
+
+func:'CalcEnergy' took: 18.7312 sec
+    \end{Verbatim}
 
     In the above example, we see that \texttt{nmax=5} seems to be
 sufficiently large, but \texttt{lmax=2} is not, because the occupation
@@ -821,11 +998,10 @@ easiest to set \texttt{config.numcores=-1} which uses all the available
 cores.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{6}{\boxspacing}
+\prompt{In}{incolor}{7}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} enable parallelization}
 \PY{k+kn}{from} \PY{n+nn}{atoMEC} \PY{k+kn}{import} \PY{n}{config}
-
 \PY{n}{config}\PY{o}{.}\PY{n}{numcores} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
 
 \PY{c+c1}{\PYZsh{} re\PYZhy{}run the calculation with larger lmax}
@@ -839,74 +1015,76 @@ Starting SCF energy calculation
 
 iscf   E\_free (Ha)    dE (1.0e-05)   dn (1.0e-04)   dv (1.0e-04)
 -----------------------------------------------------------------
-   0   -210.9503289      1.000e+00      9.999e-01      1.000e+00
-   1   -222.7062787      5.279e-02      1.006e+00      7.357e-01
-   2   -235.5939284      5.470e-02      7.726e-01      3.972e-01
-   3   -240.4607618      2.024e-02      1.988e-01      6.780e-02
-   4   -240.5742787      4.719e-04      3.588e-02      1.538e-02
-   5   -240.5757677      6.189e-06      3.135e-03      6.093e-03
-   6   -240.5759668      8.278e-07      1.181e-03      2.600e-03
-   7   -240.5759784      4.819e-08      4.296e-04      1.102e-03
-   8   -240.5759769      6.475e-09      1.554e-04      2.978e-04
-   9   -240.5759773      1.627e-09      5.779e-05      3.497e-04
-  10   -240.5759770      1.068e-09      2.085e-05      1.503e-04
-  11   -240.5759769      3.216e-10      7.679e-06      6.432e-05
+   0   -214.2614028      1.000e+00      9.999e-01      1.000e+00
+   1   -223.8611104      4.288e-02      1.026e+00      7.419e-01
+   2   -237.0092438      5.548e-02      8.081e-01      4.366e-01
+   3   -242.4583199      2.247e-02      2.045e-01      7.033e-02
+   4   -242.5739605      4.767e-04      3.631e-02      1.568e-02
+   5   -242.5755328      6.482e-06      3.614e-03      6.271e-03
+   6   -242.5765476      4.183e-06      1.354e-03      2.642e-03
+   7   -242.5765568      3.804e-08      4.785e-04      1.125e-03
+   8   -242.5765553      6.421e-09      1.698e-04      4.803e-04
+   9   -242.5765543      4.062e-09      6.050e-05      2.048e-04
+  10   -242.5765065      1.968e-07      2.610e-05      4.115e-04
+  11   -242.5765539      1.954e-07      2.242e-05      3.311e-04
+  12   -242.5765539      3.520e-10      2.819e-06      1.340e-04
+  13   -242.5765538      1.185e-10      1.014e-06      5.416e-05
 -----------------------------------------------------------------
 SCF cycle converged
 
 Final energies (Ha)
 
 ---------------------------------------------
-Kinetic energy                 :   245.4021
-    orbitals                   :   245.4021
+Kinetic energy                 :   245.1078
+    orbitals                   :   245.1078
     unbound ideal approx.      :     0.0000
-Electron-nuclear energy        :  -587.2868
-Hartree energy                 :   119.3527
-Exchange-correlation energy    :   -18.0414
-    exchange                   :   -17.0347
-    correlation                :    -1.0067
+Electron-nuclear energy        :  -585.7124
+Hartree energy                 :   118.9167
+Exchange-correlation energy    :   -17.9809
+    exchange                   :   -16.9756
+    correlation                :    -1.0053
 ---------------------------------------------
-Total energy                   :  -240.5734
+Total energy                   :  -239.6687
 ---------------------------------------------
-Entropy                        :     2.7034
-    orbitals                   :     2.7034
+Entropy                        :     7.9127
+    orbitals                   :     7.9127
     unbound ideal approx.      :     0.0000
 ---------------------------------------------
-Total free energy              :  -240.5760
+Total free energy              :  -242.5766
 ---------------------------------------------
 
-Chemical potential             :   0.699
-Mean ionization state          :   3.000
+Chemical potential             :   0.219
+Mean ionization state          :   3.011
 
 Orbital eigenvalues (Ha) :
 
      |   n=l+1 |       2 |       3 |       4 |       5
 -----+---------+---------+---------+---------+---------
- l=0 | -54.552 |  -3.446 |   0.356 |   2.925 |   6.879
-   1 |  -2.070 |   0.700 |   3.194 |   6.954 |  11.912
-   2 |   1.118 |   3.249 |   6.508 |  10.939 |  16.522
-   3 |   2.172 |   5.115 |   9.112 |  14.216 |  20.442
-   4 |   3.259 |   6.881 |  11.547 |  17.294 |  24.144
-   5 |   4.451 |   8.715 |  14.011 |  20.377 |  27.834
-   6 |   5.764 |  10.657 |  16.566 |  23.537 |  31.589
-   7 |   7.200 |  12.722 |  19.237 |  26.803 |  35.444
+ l=0 | -54.624 |  -3.476 |   0.349 |   2.913 |   6.867
+   1 |  -2.102 |   0.692 |   3.182 |   6.941 |  11.898
+   2 |   1.112 |   3.237 |   6.496 |  10.926 |  16.508
+   3 |   2.168 |   5.108 |   9.102 |  14.205 |  20.430
+   4 |   3.254 |   6.876 |  11.538 |  17.284 |  24.134
+   5 |   4.446 |   8.710 |  14.004 |  20.368 |  27.825
+   6 |   5.758 |  10.653 |  16.560 |  23.529 |  31.580
+   7 |   7.195 |  12.718 |  19.232 |  26.796 |  35.436
 
 
 Orbital occupations (2l+1) * f\_\{nl\} :
 
      |   n=l+1 |       2 |       3 |       4 |       5
 -----+---------+---------+---------+---------+---------
- l=0 |   2.000 |   2.000 |   2.000 |   0.000 |   0.000
-   1 |   6.000 |   1.000 |   0.000 |   0.000 |   0.000
-   2 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
-   3 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
-   4 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
+ l=0 |   2.000 |   2.000 |   0.825 |   0.001 |   0.000
+   1 |   5.989 |   1.297 |   0.002 |   0.000 |   0.000
+   2 |   0.809 |   0.003 |   0.000 |   0.000 |   0.000
+   3 |   0.069 |   0.000 |   0.000 |   0.000 |   0.000
+   4 |   0.005 |   0.000 |   0.000 |   0.000 |   0.000
    5 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
    6 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
    7 |   0.000 |   0.000 |   0.000 |   0.000 |   0.000
 
 
-func:'CalcEnergy' took: 16.4906 sec
+func:'CalcEnergy' took: 19.9555 sec
     \end{Verbatim}
 
     In the above, we clearly see that \texttt{lmax=10} is more than
@@ -917,7 +1095,7 @@ run several calculations. If you are running this notebook, be patient
 as running all the calculations will take some time.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{8}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} set up the grid points to test over}
 \PY{n}{ngrid\PYZus{}test} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{500}\PY{p}{,} \PY{l+m+mi}{4500}\PY{p}{,} \PY{l+m+mi}{500}\PY{p}{)}
@@ -928,9 +1106,12 @@ as running all the calculations will take some time.
 \PY{c+c1}{\PYZsh{} reset lmax to 6}
 \PY{n}{lmax} \PY{o}{=} \PY{l+m+mi}{6}
 
+\PY{c+c1}{\PYZsh{} change into the converence directory}
+\PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{n}{basedir} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/convergence\PYZus{}tests/}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \PY{c+c1}{\PYZsh{} loop over the ngrid array}
 \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{ngrid} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{ngrid\PYZus{}test}\PY{p}{)}\PY{p}{:}
-    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Running calculation for }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ngrid}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{grid pts}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} set the output to an external file}
+    \PY{n}{sys}\PY{o}{.}\PY{n}{stdout} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Al\PYZus{}ngrid\PYZus{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{ngrid}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.log}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{w}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
     \PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}
         \PY{n}{nmax}\PY{p}{,} \PY{n}{lmax}\PY{p}{,} \PY{n}{grid\PYZus{}params}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ngrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{ngrid}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}
     \PY{p}{)}
@@ -938,6 +1119,9 @@ as running all the calculations will take some time.
     \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{energy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{F\PYZus{}tot}
     \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{eigvals}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}
     \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]} \PY{o}{=} \PY{n}{config}\PY{o}{.}\PY{n}{mu}
+
+\PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{n}{basedir}\PY{p}{)} \PY{c+c1}{\PYZsh{} change back to base directory}
+\PY{n}{sys}\PY{o}{.}\PY{n}{stdout} \PY{o}{=} \PY{n}{default\PYZus{}stdout} \PY{c+c1}{\PYZsh{} change output back to console}
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -946,7 +1130,7 @@ potential \(\mu\) below to check their convergence with respect to the
 grid size.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{9}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} import package to make nice tables}
 \PY{k+kn}{import} \PY{n+nn}{tabulate}
@@ -965,6 +1149,19 @@ grid size.
 \PY{n+nb}{print}\PY{p}{(}\PY{n}{conv\PYZus{}tbl}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+   ngrid |    F tot |    e\_1s |      mu
+---------+----------+---------+---------
+     500 | -243.265 | -54.713 |   0.189
+    1000 | -242.576 | -54.623 |   0.219
+    1500 | -242.345 | -54.595 |   0.229
+    2000 | -242.229 | -54.580 |   0.235
+    2500 | -242.159 | -54.572 |   0.238
+    3000 | -242.113 | -54.566 |   0.240
+    3500 | -242.080 | -54.561 |   0.242
+    4000 | -242.055 | -54.559 |   0.242
+    \end{Verbatim}
 
     The degree of convergence required depends on various factors, such as
 the error that the user is willing to tolerate and the property that is
@@ -995,7 +1192,7 @@ because, under these conditions, the \(1s\) level is fully isolated from
 the neighbouring spheres and so is not part of an energy band.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{10}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} set up the nkpts array}
 \PY{n}{nkpts\PYZus{}arr} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{110}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}
@@ -1006,10 +1203,12 @@ the neighbouring spheres and so is not part of an energy band.
 \PY{c+c1}{\PYZsh{} reset the output array}
 \PY{n}{output\PYZus{}arr} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{nkpts\PYZus{}arr}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
 
-\PY{c+c1}{\PYZsh{} loop over the nkpts array}
-\PY{c+c1}{\PYZsh{} use a coarse value of ngrid since we are performing an independent kpt check}
+\PY{c+c1}{\PYZsh{} change to convergence directory}
+\PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{n}{basedir} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/convergence\PYZus{}tests/}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} loop over the nkpts array with a coarse ngrid value (independent)}
 \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{nkpts} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{nkpts\PYZus{}arr}\PY{p}{)}\PY{p}{:}
-    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Running calculation for }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{nkpts}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals per band}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} set the output to an external file}
+    \PY{n}{sys}\PY{o}{.}\PY{n}{stdout} \PY{o}{=} \PY{n+nb}{open}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Al\PYZus{}nkpts\PYZus{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{ngrid}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.log}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{w}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
     \PY{n}{output} \PY{o}{=} \PY{n}{Al\PYZus{}model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}
         \PY{n}{nmax}\PY{p}{,}
         \PY{n}{lmax}\PY{p}{,}
@@ -1021,11 +1220,14 @@ the neighbouring spheres and so is not part of an energy band.
     \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{energy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{F\PYZus{}tot}
     \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{eigvals}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}
     \PY{n}{output\PYZus{}arr}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]} \PY{o}{=} \PY{n}{config}\PY{o}{.}\PY{n}{mu}
+    
+\PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{n}{basedir}\PY{p}{)} \PY{c+c1}{\PYZsh{} change back to base directory}
+\PY{n}{sys}\PY{o}{.}\PY{n}{stdout} \PY{o}{=} \PY{n}{default\PYZus{}stdout} \PY{c+c1}{\PYZsh{} change output back to console}
 \end{Verbatim}
 \end{tcolorbox}
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{11}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} create table}
 \PY{n}{headers} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{nkpts}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{F tot}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{e\PYZus{}c}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
@@ -1039,6 +1241,21 @@ the neighbouring spheres and so is not part of an energy band.
 \PY{n+nb}{print}\PY{p}{(}\PY{n}{conv\PYZus{}tbl}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+   nkpts |    F tot |     e\_c |      mu
+---------+----------+---------+---------
+      10 | -243.814 |  -0.131 |  -0.038
+      20 | -243.859 |  -0.130 |  -0.053
+      30 | -243.869 |  -0.130 |  -0.057
+      40 | -243.873 |  -0.130 |  -0.058
+      50 | -243.875 |  -0.130 |  -0.059
+      60 | -243.877 |  -0.130 |  -0.059
+      70 | -243.878 |  -0.130 |  -0.059
+      80 | -243.878 |  -0.130 |  -0.059
+      90 | -243.879 |  -0.130 |  -0.060
+     100 | -243.879 |  -0.130 |  -0.060
+    \end{Verbatim}
 
     We see from the above that, for this example, the quantities of interest
 are very well converged already with \texttt{nkpts=20}. However, the
@@ -1063,10 +1280,8 @@ facilitate comparison between the AA model and a full DFT-MD simulation.
 First, we calculate the DOS for Carbon under these conditions:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{15}{\boxspacing}
+\prompt{In}{incolor}{12}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-\PY{c+c1}{\PYZsh{} first save the console output}
-\PY{n}{default\PYZus{}stdout} \PY{o}{=} \PY{n}{sys}\PY{o}{.}\PY{n}{stdout}
 \PY{c+c1}{\PYZsh{} set up the base Carbon atom}
 \PY{n}{C\PYZus{}atom} \PY{o}{=} \PY{n}{Atom}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{,} \PY{n}{density}\PY{o}{=}\PY{l+m+mf}{1.0}\PY{p}{,} \PY{n}{units\PYZus{}temp}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{eV}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
 \PY{c+c1}{\PYZsh{} set up the base model}
@@ -1082,8 +1297,6 @@ First, we calculate the DOS for Carbon under these conditions:
 \PY{n}{grid\PYZus{}params} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ngrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{2000}\PY{p}{\PYZcb{}}
 \PY{c+c1}{\PYZsh{} band parameters}
 \PY{n}{band\PYZus{}params} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{nkpts}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mi}{50}\PY{p}{\PYZcb{}}
-\PY{c+c1}{\PYZsh{} base directory:}
-\PY{n}{basedir} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/home/callow46/mean\PYZus{}ionization\PYZus{}paper}\PY{l+s+s2}{\PYZdq{}}
 
 \PY{c+c1}{\PYZsh{} change into the bc directory}
 \PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{n}{basedir} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/results/Carbon/bands/}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
@@ -1093,19 +1306,32 @@ First, we calculate the DOS for Carbon under these conditions:
     \PY{c+c1}{\PYZsh{} set the density}
     \PY{n}{C\PYZus{}atom}\PY{o}{.}\PY{n}{density} \PY{o}{=} \PY{n}{density}
     \PY{c+c1}{\PYZsh{} run the SCF calculation}
-    \PY{n}{output} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}\PY{n}{nmax}\PY{p}{,}\PY{n}{lmax}\PY{p}{,}\PY{n}{grid\PYZus{}params}\PY{o}{=}\PY{n}{grid\PYZus{}params}\PY{p}{,}\PY{n}{band\PYZus{}params}\PY{o}{=}\PY{n}{band\PYZus{}params}\PY{p}{,}\PY{n}{dos\PYZus{}file}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dos\PYZus{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{density}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{output} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{CalcEnergy}\PY{p}{(}
+        \PY{n}{nmax}\PY{p}{,}
+        \PY{n}{lmax}\PY{p}{,}
+        \PY{n}{grid\PYZus{}params}\PY{o}{=}\PY{n}{grid\PYZus{}params}\PY{p}{,}
+        \PY{n}{band\PYZus{}params}\PY{o}{=}\PY{n}{band\PYZus{}params}\PY{p}{,}
+        \PY{n}{dos\PYZus{}file}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dos\PYZus{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{density}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{p}{)}
     \PY{c+c1}{\PYZsh{} save the chemical potential}
     \PY{n}{chem\PYZus{}pots}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{config}\PY{o}{.}\PY{n}{mu}
-    
-\PY{c+c1}{\PYZsh{} reset output to terminal}
-\PY{n}{sys}\PY{o}{.}\PY{n}{stdout} \PY{o}{=} \PY{n}{default\PYZus{}stdout}
+
+\PY{n}{os}\PY{o}{.}\PY{n}{chdir}\PY{p}{(}\PY{n}{basedir}\PY{p}{)} \PY{c+c1}{\PYZsh{} change back to base directory}
+\PY{n}{sys}\PY{o}{.}\PY{n}{stdout} \PY{o}{=} \PY{n}{default\PYZus{}stdout} \PY{c+c1}{\PYZsh{} change output back to console}
 \end{Verbatim}
 \end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Warning: this input temperature is very high. Proceeding anyway, but results may
+not be accurate.
+Normal temperature range for atoMEC is 0.01 -- 100 eV
+
+    \end{Verbatim}
 
     Next, we plot the DOS:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{54}{\boxspacing}
+\prompt{In}{incolor}{13}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{k+kn}{import} \PY{n+nn}{MIS\PYZus{}plots}
 \PY{n}{MIS\PYZus{}plots}\PY{o}{.}\PY{n}{plot\PYZus{}DOS}\PY{p}{(}\PY{n}{densities}\PY{p}{,} \PY{n}{chem\PYZus{}pots}\PY{p}{)}
@@ -1117,7 +1343,7 @@ First, we calculate the DOS for Carbon under these conditions:
 \centering 
 \includegraphics{figures/Carbon_DOS_comp.pdf} 
 \label{C:dos_example} 
-\caption{Radial density distribution for Aluminium} 
+\caption{Density-of-states for Carbon at a range of densities                     and temperature $T = 100\ \textrm{eV}$, calculated with the AA                     band-structure model.} 
 \end{figure}    \end{center}
     { \hspace*{\fill} \\}
     
@@ -1163,18 +1389,10 @@ identically. The integral in the above equation therefore becomes a sum
 over all the states with energies above \(v(R_\textrm{WS})\),
 
 \begin{equation}
-\bar{Z} = \sum_{k,\sigma,l,n} (2l+1) w_{k\sigma ln} g_{k\sigma ln} f_{k\sigma ln} \Theta(\epsilon_{k\sigma ln}-v(R_\textrm{WS}))\,,
+\bar{Z} = 2\sum_{k,\sigma,l,n} (2l+1) w_{k} f_{k ln} \Theta(\epsilon_{k ln}-v(R_\textrm{WS}))\,,
 \end{equation}
 
-where \(\Theta\) is the Heaviside step function. The four indices
-\(k,\sigma,l,n\) of the various orbital dependent quantities are
-respectively the \(k\)-point index of the band, and the spin, angular
-momentum and principal quantum numbers. \(w_{k\sigma ln}\) is the
-\(k\)-point integral weighting for the \texttt{"bands"} boundary
-condition. For the \texttt{"dirichlet"} and \texttt{"neumann"}
-conditions, both this integral weighting and the DOS \(g_{k\sigma ln}\)
-are identically one (in this case, there is only ever a single \(k\)
-point since there are no bands).
+where \(\Theta\) is the Heaviside step function.
 
 As was seen in the earlier examples, the MIS calculate via the threshold
 method is printed by default at the end of every SCF run anyway. It is
@@ -1183,7 +1401,7 @@ accessed through that if desired. Let us again run a calculation for
 Aluminium at ambient conditions:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{44}{\boxspacing}
+\prompt{In}{incolor}{21}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} first set up and run a calculation}
 \PY{c+c1}{\PYZsh{} set up the ISModel}
@@ -1196,8 +1414,9 @@ Aluminium at ambient conditions:
     \PY{n}{write\PYZus{}info}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
 \PY{p}{)}
 
-\PY{c+c1}{\PYZsh{} reset the temperature}
+\PY{c+c1}{\PYZsh{} reset temperature and density}
 \PY{n}{Al\PYZus{}atom}\PY{o}{.}\PY{n}{temp} \PY{o}{=} \PY{l+m+mf}{0.01}
+\PY{n}{Al\PYZus{}atom}\PY{o}{.}\PY{n}{density} \PY{o}{=} \PY{l+m+mf}{2.7}
 
 \PY{c+c1}{\PYZsh{} set the values of nmax and lmax}
 \PY{n}{nmax} \PY{o}{=} \PY{l+m+mi}{5}
@@ -1214,8 +1433,16 @@ Aluminium at ambient conditions:
 \end{Verbatim}
 \end{tcolorbox}
 
+    \begin{Verbatim}[commandchars=\\\{\}]
+Warning: this input temperature is very low. Proceeding anyway, but results may
+not be accurate.
+Normal temperature range for atoMEC is 0.01 -- 100 eV
+
+func:'CalcEnergy' took: 25.3485 sec
+    \end{Verbatim}
+
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{22}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} extract the MIS}
 \PY{n}{MIS} \PY{o}{=} \PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{density}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{MIS}
@@ -1224,6 +1451,14 @@ Aluminium at ambient conditions:
 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{MIS = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{MIS}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+MIS =  3.0
+    \end{Verbatim}
+
+    In this case, the MIS computed with the threshold approach is equal to
+\(3.0\), which is the number of orbitals in the conduction band for
+Aluminium at ambient conditions.
 
     \hypertarget{calculation-of-mis-using-the-electron-localization-function}{%
 \subsection{Calculation of MIS using the electron localization
@@ -1250,7 +1485,7 @@ In atoMEC the ELF is accessed through the
 and plot the ELF for our Aluminium example.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{49}{\boxspacing}
+\prompt{In}{incolor}{23}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} import localization module}
 \PY{k+kn}{from} \PY{n+nn}{atoMEC}\PY{n+nn}{.}\PY{n+nn}{postprocess} \PY{k+kn}{import} \PY{n}{localization}
@@ -1285,7 +1520,7 @@ and plot the ELF for our Aluminium example.
 \centering 
 \includegraphics{figures/ELF_example.pdf} 
 \label{Al:ELF_example} 
-\caption{Radial density distribution for Aluminium} 
+\caption{Electron localization function $\textrm{ELF}(r)$ for Aluminium at                     its solid density $\rho_\textrm{m}=2.7\ \textrm{g cm}^{-3}$ and                     temperature $T = 0.01\ \textrm{eV}$, for the Dirichlet                     boundary condition.} 
 \end{figure}    \end{center}
     { \hspace*{\fill} \\}
     
@@ -1296,7 +1531,7 @@ paper. In atoMEC, we can access this data from the \texttt{N\_shell}
 property of the \texttt{ELFTools} object:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{24}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} extract the number of electrons per shell}
 \PY{n}{N\PYZus{}s} \PY{o}{=} \PY{n}{ELF\PYZus{}Al}\PY{o}{.}\PY{n}{N\PYZus{}shell}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
@@ -1306,13 +1541,18 @@ property of the \texttt{ELFTools} object:
 \end{Verbatim}
 \end{tcolorbox}
 
+    \begin{Verbatim}[commandchars=\\\{\}]
+The number of electrons in the n = 1 shell = 2.13
+The number of electrons in the n = 2 shell = 7.72
+The number of electrons in the n = 3 shell = 3.11
+    \end{Verbatim}
+
     These numbers approximately match up to what we expect from ambient
 Aluminium: 2 electrons in the \(n=1\) shell, 8 in the \(n=2\) shell, and
 the remaining 3 electrons in the conduction band (which we call the
 \(n=3\) shell here). As discussed in the main paper, extracting the MIS
 from this output requires some user input based on physical intuition,
-to decide which shells should be counted as bound and which free. We
-shall explain our choices in the results section.
+to decide which shells should be counted as bound and which free.
 
     \hypertarget{calculation-of-the-mis-using-the-kubogreenwood-formula}{%
 \subsection{Calculation of the MIS using the Kubo--Greenwood
@@ -1371,15 +1611,18 @@ aforementioned paper where it is derived in full. The terms in the above
 expression are given by
 
 \begin{align}
-R^{(d)}_{nn'll'} &= \int_0^{R_\textrm{VS}} \textrm{d}r r^2 X_{n'l'}(r) \frac{\textrm{d}X_{nl}(r)}{\textrm{d}r}\\
- R_{nn'll'} &= \int_0^{R_\textrm{VS}} \textrm{d}r r X_{n'l'}(r) X_{nl}(r) \\
+R^{(d)}_{nn'll'} &= 4\pi\int_0^{R_\textrm{VS}} \textrm{d}r r^2 X_{n'l'}(r) \frac{\textrm{d}X_{nl}(r)}{\textrm{d}r}\\
+ R_{nn'll'} &= 4\pi\int_0^{R_\textrm{VS}} \textrm{d}r r X_{n'l'}(r) X_{nl}(r) \\
  P^{(2)}_{lml'm'} &= 2\pi C_{lm}C_{l'm'} \int_{-1}^{1} \textrm{d}x x P_{l'}^{m'} (x) P_{l}^{m}(x) \\
  P^{(4)}_{lml'm'} &= -2\pi C_{lm}C_{l'm'} \int_{-1}^{1} \textrm{d}x (1-x^2) P_{l'}^{m'} (x) \frac{\textrm{d}P_l^m(x)}{\textrm{d}x}\\
  C_{lm} &= \sqrt{\frac{2l+1}{4\pi}}\sqrt{\frac{(l-|m|)!}{(l+|m|)!)}}\,,
 \end{align}
 
-where \(P_l^m(x)\) are the Legendre polynomials. Returning to the
-expression for \(\sigma(\omega)\), we now have
+where \(P_l^m(x)\) are the Legendre polynomials. Note there are some
+additional factors of \(4\pi\) in the above expressions compared to Ref.
+\onlinecite{Trickey_Kubo_Greenwood}, due to different conventions in
+normalization of the orbitals. Returning to the expression for
+\(\sigma(\omega)\), we now have
 
 \begin{equation}
 \sigma_{S_1,S_2}(\omega) = \frac{2\pi}{V\omega} \sum_{nl\in S_1} \sum_{n'l'\in S_2} \sum_{m\in \{S1,S2\}} (f_{nl} - f_{n'l'}) |\nabla_{nn'll'm}^z|^2 \delta (\epsilon_{n'l'} - \epsilon_{nl} - \omega) \delta(l\pm 1 - l')\,.
@@ -1423,7 +1666,7 @@ of electrons (to check the sum rule is satisfied) and the number of free
 electrons (i.e.~the MIS) below.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
+\prompt{In}{incolor}{25}{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} first we re\PYZhy{}run the Al calculation with more unoccupied orbitals}
 \PY{c+c1}{\PYZsh{} this is required because the KG method needs empty orbitals to converge}
@@ -1443,18 +1686,19 @@ electrons (i.e.~the MIS) below.
 \end{Verbatim}
 \end{tcolorbox}
 
-    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
-\prompt{In}{incolor}{ }{\boxspacing}
-\begin{Verbatim}[commandchars=\\\{\}]
-\PY{c+c1}{\PYZsh{} now run Kubo\PYZhy{}Greenwood}
-\PY{k+kn}{from} \PY{n+nn}{atoMEC} \PY{k+kn}{import} \PY{n}{kubo\PYZus{}greenwood}
+    \begin{Verbatim}[commandchars=\\\{\}]
+func:'CalcEnergy' took: 89.8896 sec
+    \end{Verbatim}
 
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
 \PY{c+c1}{\PYZsh{} we need to define the \PYZsq{}valence\PYZsq{} orbitals, which actually means everything not in the conduction band}
 \PY{c+c1}{\PYZsh{} for solid Al at room temperature the valence orbitals are 1s, 2s and 2p}
 \PY{n}{valence\PYZus{}orbs} \PY{o}{=} \PY{p}{[}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]}
 
 \PY{c+c1}{\PYZsh{} set up the Kubo\PYZhy{}Greenwood object}
-\PY{n}{kg} \PY{o}{=} \PY{n}{kubo\PYZus{}greenwood}\PY{o}{.}\PY{n}{KuboGreenwood}\PY{p}{(}\PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{valence\PYZus{}orbs}\PY{o}{=}\PY{n}{valence\PYZus{}orbs}\PY{p}{)}
+\PY{n}{kg} \PY{o}{=} \PY{n}{localization}\PY{o}{.}\PY{n}{KuboGreenwood}\PY{p}{(}\PY{n}{output}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{orbitals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{valence\PYZus{}orbs}\PY{o}{=}\PY{n}{valence\PYZus{}orbs}\PY{p}{)}
 
 \PY{c+c1}{\PYZsh{} compute the total number of electrons}
 \PY{n}{N\PYZus{}tot} \PY{o}{=} \PY{n}{kg}\PY{o}{.}\PY{n}{N\PYZus{}tot}
@@ -1467,6 +1711,11 @@ electrons (i.e.~the MIS) below.
 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of free electrons = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{N\PYZus{}free}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 \end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Total number of electrons =  12.95
+Number of free electrons =  3.29
+    \end{Verbatim}
 
     In the above example, it can be seen that the total number of electrons
 equals 12.95, which is very close to the expected value of 13 for
