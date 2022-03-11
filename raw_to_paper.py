@@ -98,7 +98,7 @@ with open("supp_info_for_paper.tex", "w") as f:
         elif "\\captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}" in line:
             continue
 
-        elif "Warning: this input temperature is very low" in line:
+        elif "Warning: this input temperature is very" in line:
             continue
         elif "not be accurate" in line:
             continue
