@@ -398,7 +398,7 @@ are assumed to be identical,
 
 We shall first review the important aspects of our model; in the
 following sub-section, we explain in more detail the band-structure
-model of Massacrier \emph{et al} \cite{massacrier_bands} which we have
+model of Massacrier \emph{et al.} \cite{massacrier_bands} which we have
 also implemented in atoMEC. As discussed in the main text, we solve the
 spherically symmetric Kohn--Sham (KS) equations for an atom at finite
 temperature, with appropriate boundary conditions imposed on the
@@ -474,7 +474,7 @@ orbitals gain an extra index since we solve the KS equations for all
 energies in a given band. The KS equations thus become
 
 \begin{equation}
-\left[\frac{\textrm{d}^2}{\textrm{d}r} + \frac{2}{r}\frac{\textrm{d}}{\textrm{d}r} - \frac{l(l+1)}{r^2} \right] X_{\epsilon nl}(r) + 2 \left[\epsilon^{\tau}_{knl} - v_\textrm{s}[n](r) \right] X_{\epsilon nl}(r) = 0,
+\left[\frac{\textrm{d}^2}{\textrm{d}r} + \frac{2}{r}\frac{\textrm{d}}{\textrm{d}r} - \frac{l(l+1)}{r^2} \right] X_{\epsilon nl}(r) + 2 \left[\epsilon^{\tau}_{nl} - v_\textrm{s}[n](r) \right] X_{\epsilon nl}(r) = 0,
 \end{equation}
 
 and the density is given by
@@ -601,9 +601,6 @@ mass density. We start with Aluminium at room temperature:
 
 Welcome to atoMEC!
 
-Warning: this input temperature is very low. Proceeding anyway, but results may
-not be accurate.
-Normal temperature range for atoMEC is 0.01 -- 100 eV
 
 Atomic information:
 
@@ -628,7 +625,7 @@ models and documentation in the code.
 
 Next we set up a \texttt{model} object, which contains input regarding
 which approximations we use in our model, for example the boundary
-condition and exchange-correlation (XC) approximation.
+condition and exchange-correlation (xc) approximation.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{3}{\boxspacing}
@@ -672,7 +669,7 @@ Furthermore, we have specified the following approximations:
   described in the main text) is applied to the orbitals
 \item
   \texttt{xfunc\_id="lda\_x"}, \texttt{cfunc\_id="lda\_c\_pw"}: We have
-  chosen the LDA XC functional
+  chosen the LDA xc functional
 \end{itemize}
 
 We are now ready to run an SCF calculation, which is done by the
@@ -684,9 +681,9 @@ default values for now.
 The two parameters which must be specified are the maximal value of the
 principal and angular quantum numbers, \texttt{nmax} and \texttt{lmax}.
 atoMEC will search for all the eigenvalues in the range
-\(0<n<\textrm{nmax}\), \(0<l<\textrm{lmax}\). Since we have a system at
-room temperature we do not need to include lots of states so we set
-\texttt{nmax=5}, \texttt{lmax=3}.
+\(0\leq n<\textrm{nmax}\), \(0\leq l<\textrm{lmax}\). Since we have a
+system at room temperature we do not need to include lots of states so
+we set \texttt{nmax=5}, \texttt{lmax=3}.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{4}{\boxspacing}
@@ -882,10 +879,9 @@ For all the boundary conditions, the main ones are:
 \tightlist
 \item
   \texttt{nmax}: the maximum number of the principal quantum number
-  \texttt{n}
+  \(n\)
 \item
-  \texttt{lmax}: the maximum number of the angular quantum number
-  \texttt{l}
+  \texttt{lmax}: the maximum number of the angular quantum number \(l\)
 \item
   \texttt{grid\_params}: dictionary parameter controlling the
   logarithmic grid, in particular the number of grid points
@@ -981,13 +977,13 @@ func:'CalcEnergy' took: 18.7312 sec
     \end{Verbatim}
 
     In the above example, we see that \texttt{nmax=5} seems to be
-sufficiently large, but \texttt{lmax=2} is not, because the occupation
+sufficiently large, but \texttt{lmax=3} is not, because the occupation
 of the \(l=2,n=0\) state is 0.834, i.e.~significantly above zero. We
 therefore choose a much larger value of \texttt{lmax} to check what is
 required for convergence.
 
 Since the diagonalization must be performed separately for every value
-of \(0<l<\textrm{lmax}\), the computational time is proportional to
+of \(0\leq l<\textrm{lmax}\), the computational time is proportional to
 \texttt{lmax}. There is a simple kind of parallelization implemented in
 atoMEC, courtesy of the joblib library \cite{joblib}, which parallelizes
 the calculation over \texttt{l} (and also spin if
@@ -1323,8 +1319,6 @@ First, we calculate the DOS for Carbon under these conditions:
 
     \begin{Verbatim}[commandchars=\\\{\}]
 Warning: this input temperature is very high. Proceeding anyway, but results may
-not be accurate.
-Normal temperature range for atoMEC is 0.01 -- 100 eV
 
     \end{Verbatim}
 
@@ -1434,9 +1428,6 @@ Aluminium at ambient conditions:
 \end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-Warning: this input temperature is very low. Proceeding anyway, but results may
-not be accurate.
-Normal temperature range for atoMEC is 0.01 -- 100 eV
 
 func:'CalcEnergy' took: 25.3485 sec
     \end{Verbatim}
