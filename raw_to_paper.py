@@ -5,7 +5,7 @@ nb_name = "supp_info.ipynb"
 os.system("jupyter-nbconvert supp_info.ipynb --to latex")
 
 author_list = ", ".join(["Timothy J. Callow", "Eli Kraisler", "Attila Cangi"])
-title = "Accurate and efficient computation of mean ionization states with an average-atom Kubo--Greenwood approach: Supplementary Material"
+title = "Improved calculations of mean ionization states with an average-atom model: Supplementary material"
 
 with open("supp_info.tex", "r") as f:
 
@@ -18,13 +18,13 @@ with open("supp_info_for_paper.tex", "w") as f:
             linenew = "\\documentclass[9pt]{article}" + "\n"
             f.write(linenew)
             print(line)
-        elif i == 157:
+        elif i == 167:
             linenew = "\\title{" + title + "} \n"
             print(line)
             f.write(linenew)
             linenew = "\\author{" + author_list + "}\n"
             f.write(linenew)
-        elif i == 317:
+        elif i == 327:
             linenew = "\\renewcommand{\\Verbatim}[1][1]{\\small %}" + "\n"
             print(line)
             f.write(line)
@@ -64,7 +64,7 @@ with open("supp_info_for_paper.tex", "w") as f:
             f.write(linenew)
             print(linenew)
 
-        elif "supp_info_32_0.png" in line:
+        elif "supp_info_22_0.png" in line:
             linenew = " \n".join(
                 [
                     "\\begin{figure}",
