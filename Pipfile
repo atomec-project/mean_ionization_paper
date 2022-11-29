@@ -13,6 +13,9 @@ joblib = ">=1.0.1"
 matplotlib = ">=3.4.1"
 jupyter = ">=1.0.0"
 ipykernel = ">=6.0.3"
+jupyter-contrib-nbextensions = "*"
+black = "*"
+nbstripout = "*"
 
 [requires]
-python_version = "3"
+python_version = "3.8"
