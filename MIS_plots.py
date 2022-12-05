@@ -1,3 +1,5 @@
+'''Functions to create figures with nice formatting.'''
+
 import numpy as np
 import matplotlib.pyplot as plt
 from cycler import cycler
