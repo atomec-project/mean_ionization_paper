@@ -4,6 +4,8 @@ This repository contains the supplementary information for the [paper](https://a
 
 The main file is the `supp_info.ipynb` file. This is a Jupyter notebook which contains some computational details about the methods presented in the paper, and all the code required to reproduce the results of this paper.
 
+The notebook can be converted to a formatted `.tex` file using `python raw_to_paper.py`.
+
 ## Installation
 
 The packages needed to run the notebook are listed in `requirements.txt`, and can be installed (for example) with `pip install -r requirements.txt`. The notebook has been tested with Python 3.8.
