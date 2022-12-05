@@ -1,0 +1,4 @@
+jupyter
+numpy
+matplotlib
+atoMEC == 1.2.0
