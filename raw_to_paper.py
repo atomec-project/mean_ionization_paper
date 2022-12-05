@@ -1,3 +1,5 @@
+'''Convert the Jupyter notebook to a tex file and improve the formatting of the tex file.'''
+
 import os
 
 nb_name = "supp_info.ipynb"
