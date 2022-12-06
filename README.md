@@ -2,7 +2,7 @@
 
 This repository contains the supplementary information for the [paper](https://arxiv.org/abs/2203.05863) "Improved calculations of mean ionization states with an average-atom model" [INSERT REF HERE].
 
-The main file is the `supp_info.ipynb` file. This is a Jupyter notebook which contains some computational details about the methods presented in the paper, and all the code required to reproduce the results of this paper.
+The main file is the `supp_info.ipynb` file. This is a Jupyter notebook which contains computational details about the methods presented in the paper, and all the code required to reproduce the results of this paper.
 
 The notebook can be converted to a formatted `.tex` file using `python raw_to_paper.py`.
 
@@ -11,6 +11,8 @@ The notebook can be converted to a formatted `.tex` file using `python raw_to_pa
 The packages needed to run the notebook are listed in `requirements.txt`, and can be installed (for example) with `pip install -r requirements.txt`. The notebook has been tested with Python 3.8.
 
 ## Data: direct download
+
+Please note: the following steps are only required for the second part of the notebook, which contains the code required to reproduce the results of the paper. If you only want to learn the implementation details and see some examples, i.e. run the first part of the notebook, you can skip the following steps. They require either a large amount of computational resources, or the download of a large (62 GB) dataset.
 
 There are a large number of SCF calculations in the notebook. It is not feasible to run these on a personal computer, an HPC system is required. Therefore the notebook is by default set up not to run these calculations, though the code is provided for those who want to. 
 
