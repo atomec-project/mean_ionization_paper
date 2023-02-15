@@ -1,6 +1,6 @@
 # Improved calculations of mean ionization states with an average-atom model: supplementary information
 
-This repository contains the supplementary information for the [paper](https://arxiv.org/abs/2203.05863) "Improved calculations of mean ionization states with an average-atom model" (to be published in *Phys. Rev. Research*).
+This repository contains the supplementary information for the [paper](https://journals.aps.org/prresearch/abstract/10.1103/PhysRevResearch.5.013049) "Improved calculations of mean ionization states with an average-atom model".
 
 The main file is the `supp_info.ipynb` file. This is a Jupyter notebook which contains computational details about the methods presented in the paper, and all the code required to reproduce the results of this paper.
 
@@ -29,5 +29,5 @@ This will create a `results/` directory, which contains a separate `README.md` f
 
 If you use this notebook in your research, please cite the associated paper [1] and the atoMEC code [2].
 
-1. T.J. Callow, E. Kraisler, and A. Cangi. "Improved calculations of mean ionization states with an average-atom model", arXiv pre-print (2022).
-2. T. J. Callow, D. Kotik, E. Kraisler, and A. Cangi, "atoMEC: An open-source average-atom Python code", _Proceedings of the 21st Python in Science Conference_, edited by Meghann Agarwal, Chris Calloway, Dillon Niederhut, and David Shupe (2022), pp. 37-45.
+1. T.J. Callow, E. Kraisler, and A. Cangi. "Improved calculations of mean ionization states with an average-atom model", Phys. Rev. Research **5**, 013049 (2023)
+2. T. J. Callow, D. Kotik, E. Kraisler, and A. Cangi, "atoMEC: An open-source average-atom Python code", Proceedings of the 21st Python in Science Conference, edited by Meghann Agarwal, Chris Calloway, Dillon Niederhut, and David Shupe (2022), pp. 37-45.
